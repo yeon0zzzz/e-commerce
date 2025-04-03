@@ -102,19 +102,19 @@
 
 ### 🎟️ `coupon` 테이블
 
-| 컬럼명 | 설명 |
-| --- | --- |
-| coupon_id | 쿠폰 ID (PK) |
-| name | 쿠폰 이름 |
-| description | 쿠폰 설명 |
-| discount_amount | 할인 금액 |
-| issued_quantity | 총 발급 가능 수량 |
-| issued_count | 현재 발급된 수량 |
-| coupon_status | 쿠폰 상태 (`ACTIVE`, `INACTIVE`, `EXPIRED`) |
-| valid_from | 유효 시작일 |
-| valid_to | 유효 종료일 |
-| created_at | 생성 시간 |
-| updated_at | 수정 시간 |
+| 컬럼명             | 설명                                      |
+|-----------------|-----------------------------------------|
+| coupon_id       | 쿠폰 ID (PK)                              |
+| name            | 쿠폰 이름                                   |
+| description     | 쿠폰 설명                                   |
+| discount_amount | 할인 금액                                   |
+| issued_quantity | 총 발급 가능 수량                              |
+| issued_count    | 현재 발급된 수량                               |
+| coupon_status   | 쿠폰 상태 (`ACTIVE`, `INACTIVE`, `EXPIRED`) |
+| activated_at    | 유효 시작일                                  |
+| expired_at      | 유효 만료일                                  |
+| created_at      | 생성 시간                                   |
+| updated_at      | 수정 시간                                   |
 
 ---
 
