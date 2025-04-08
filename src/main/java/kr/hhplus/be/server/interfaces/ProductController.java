@@ -15,7 +15,7 @@ import java.util.Map;
 public class ProductController {
 
     @GetMapping
-    public ApiResponse getProductList() {
+    public ApiResponse getProducts() {
         Map<String, Object> product = new HashMap<>();
         product.put("productId", 1);
         product.put("name", "상품 A");
