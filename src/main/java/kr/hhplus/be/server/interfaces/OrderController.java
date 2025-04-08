@@ -9,21 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-//@RequestMapping("/orders")
+@RequestMapping("/orders")
 public class OrderController {
 
-    @PostMapping("/orders")
-    public ApiResponse createOrder(@RequestBody Map<String, Object> request) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("orderId", 1001);
-        response.put("finalAmount", 15000);
-        response.put("createdAt", LocalDateTime.now());
-
-        return ApiResponse.success(response);
-    }
-
-    @GetMapping("/orders/{orderId}")
-    public ApiResponse getOrderDetail(@PathVariable Long orderId) {
+    @GetMapping("")
+    public ApiResponse getOrders(@PathVariable Long orderId) {
         Map<String, Object> order = new HashMap<>();
         order.put("orderId", orderId);
         order.put("userId", 1);
@@ -34,8 +24,18 @@ public class OrderController {
         return ApiResponse.success(order);
     }
 
-    @GetMapping("/users/{userId}/orders")
-    public ApiResponse getUserOrders(@PathVariable Long userId) {
+    @PostMapping("")
+    public ApiResponse createOrder(@RequestBody Map<String, Object> request) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("orderId", 1001);
+        response.put("finalAmount", 15000);
+        response.put("createdAt", LocalDateTime.now());
+
+        return ApiResponse.success(response);
+    }
+
+    @GetMapping("/{orderId}")
+    public ApiResponse getOrdersDetail(@PathVariable Long userId) {
         Map<String, Object> order = new HashMap<>();
         order.put("orderId", 1001);
         order.put("finalAmount", 15000);
@@ -44,8 +44,8 @@ public class OrderController {
         return ApiResponse.success(List.of(order));
     }
 
-    @GetMapping("/orders/{orderId}/events")
-    public ApiResponse getOrderEvents(@PathVariable Long orderId) {
+    @PatchMapping("/{orderId}/cancel")
+    public ApiResponse cancelOrder(@PathVariable Long orderId) {
         Map<String, Object> event1 = new HashMap<>();
         event1.put("status", "CREATED");
         event1.put("changedAt", LocalDateTime.now().minusMinutes(10));

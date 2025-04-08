@@ -9,24 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-//@RequestMapping("/coupons")
+@RequestMapping("/coupons")
 public class CouponController {
 
-    @PostMapping("/coupons/issue")
-    public ApiResponse issueCoupon(@RequestBody Map<String, Object> request) {
-        Long userId = Long.valueOf(request.get("userId").toString());
-        Long couponId = Long.valueOf(request.get("couponId").toString());
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("userId", userId);
-        data.put("couponId", couponId);
-        data.put("issuedAt", LocalDateTime.now());
-
-        return ApiResponse.success(data);
-    }
-
-    @GetMapping("/users/{userId}/coupons")
-    public ApiResponse getUserCoupons(@PathVariable Long userId) {
+    @GetMapping("")
+    public ApiResponse getCoupons(@RequestParam Long userId, @RequestParam String couponStatus) {
         Map<String, Object> coupon = new HashMap<>();
         coupon.put("userCouponId", 1);
         coupon.put("couponId", 10);
@@ -36,22 +23,15 @@ public class CouponController {
         return ApiResponse.success(List.of(coupon));
     }
 
-    @GetMapping("/users/{userId}/coupons/available")
-    public ApiResponse getAvailableCoupons(@PathVariable Long userId) {
-        Map<String, Object> coupon = new HashMap<>();
-        coupon.put("userCouponId", 1);
-        coupon.put("couponId", 10);
-        coupon.put("discountAmount", 1000);
+    @PostMapping("/issue")
+    public ApiResponse issueCoupon(@RequestBody Map<String, Object> request) {
+        Long userId = Long.valueOf(request.get("userId").toString());
+        Long couponId = Long.valueOf(request.get("couponId").toString());
 
-        return ApiResponse.success(List.of(coupon));
-    }
-
-    @PatchMapping("/users/{userId}/coupons/{userCouponId}/use")
-    public ApiResponse useCoupon(@PathVariable Long userId, @PathVariable Long userCouponId) {
         Map<String, Object> data = new HashMap<>();
-        data.put("userCouponId", userCouponId);
-        data.put("used", true);
-        data.put("usedAt", LocalDateTime.now());
+        data.put("userId", userId);
+        data.put("couponId", couponId);
+        data.put("issuedAt", LocalDateTime.now());
 
         return ApiResponse.success(data);
     }
