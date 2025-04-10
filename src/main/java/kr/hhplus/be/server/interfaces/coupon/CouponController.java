@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.interfaces;
+package kr.hhplus.be.server.interfaces.coupon;
 
 import kr.hhplus.be.server.common.ApiResponse;
 import org.springframework.web.bind.annotation.*;
