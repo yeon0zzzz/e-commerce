@@ -7,5 +7,5 @@ public interface ProductRepository {
 
     List<Product> findAll();
 
-    List<Product> findPopularProducts(int limit);  // 최근 3일 기준 인기상품 등
+    List<Product> findPopularProducts(int limit);  // 최근 3일 기준
 }

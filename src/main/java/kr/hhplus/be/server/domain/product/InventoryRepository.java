@@ -5,5 +5,5 @@ public interface InventoryRepository {
 
     void save(Inventory inventory);
 
-    void deductStock(Long productId, long quantity); // 재고 차감 등 비즈니스 메서드로 확장 가능
+    void deductStock(Long productId, long quantity);
 }
