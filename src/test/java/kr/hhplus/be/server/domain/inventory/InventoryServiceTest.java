@@ -1,6 +1,7 @@
-package kr.hhplus.be.server.domain.product;
+package kr.hhplus.be.server.domain.inventory;
 
 
+import kr.hhplus.be.server.domain.inventory.InventoryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 public class InventoryServiceTest {
 
     @InjectMocks
-    private ProductService productService;
+    private InventoryService inventoryService;
 
     @Mock
     private InventoryRepository inventoryRepository;
@@ -42,7 +42,7 @@ public class InventoryServiceTest {
         given(inventoryRepository.findByProductId(1L)).willReturn(inventory);
 
         // when
-        Inventory result = productService.getInventory(1L);
+        Inventory result = inventoryService.getInventory(1L);
 
         // then
         assertThat(result.availableQuantity()).isEqualTo(60);
@@ -58,7 +58,7 @@ public class InventoryServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> productService.getInventory(999L))
+        assertThatThrownBy(() -> inventoryService.getInventory(999L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(InventoryMessage.INVENTORY_NOT_FOUND);
     }
