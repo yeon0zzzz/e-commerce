@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final InventoryRepository inventoryRepository;
 
     public Product getById(Long productId) {
         Product product = productRepository.findById(productId);
@@ -23,11 +22,5 @@ public class ProductService {
 
     public List<Product> getPopular(int limit) {
         return productRepository.findPopularProducts(limit);
-    }
-
-    public Inventory getInventory(Long productId) {
-        Inventory inventory = inventoryRepository.findByProductId(productId);
-
-        return inventory;
     }
 }
