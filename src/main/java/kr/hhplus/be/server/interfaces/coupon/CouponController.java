@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/coupons")
+@RequestMapping("")
 public class CouponController {
 
-    @GetMapping("")
+    @GetMapping("/users/{userId}/coupons")
     public ApiResponse getCoupons(@RequestParam Long userId, @RequestParam String couponStatus) {
         Map<String, Object> coupon = new HashMap<>();
         coupon.put("userCouponId", 1);
@@ -23,7 +23,7 @@ public class CouponController {
         return ApiResponse.success(List.of(coupon));
     }
 
-    @PostMapping("/issue")
+    @PostMapping("/users/{userId}/coupons")
     public ApiResponse issueCoupon(@RequestBody Map<String, Object> request) {
         Long userId = Long.valueOf(request.get("userId").toString());
         Long couponId = Long.valueOf(request.get("couponId").toString());
