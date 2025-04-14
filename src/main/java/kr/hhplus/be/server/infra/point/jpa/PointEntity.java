@@ -33,4 +33,12 @@ public class PointEntity {
         return entity;
     }
 
+    public static Point toDomain (PointEntity entity){
+        return Point.builder()
+                .userId(entity.getUserId())
+                .point(entity.getPoint())
+                .updatedAt(entity.getUpdatedAt())
+                .build();
+    }
+
 }

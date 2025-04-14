@@ -4,7 +4,6 @@ import kr.hhplus.be.server.domain.point.Point;
 import kr.hhplus.be.server.domain.point.PointRepository;
 import kr.hhplus.be.server.infra.point.jpa.PointJpaRepository;
 import kr.hhplus.be.server.infra.point.jpa.PointEntity;
-import kr.hhplus.be.server.infra.point.mapper.PointMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +18,7 @@ public class PointRepositoryImpl implements PointRepository {
     @Override
     public Point findByUserId(Long userId){
         return pointJpaRepository.findByUserId(userId)
-                .map(PointMapper::toDomain)
+                .map(PointEntity::toDomain)
                 .orElseThrow(() -> new IllegalArgumentException("포인트 없음"));
     }
 
