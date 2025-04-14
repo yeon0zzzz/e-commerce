@@ -15,6 +15,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 class PointDomainTest {
 
     private final Point point = Point.builder()
+            .pointId(1L)
             .userId(1L)
             .point(0L)
             .updatedAt(LocalDateTime.now())
@@ -23,7 +24,7 @@ class PointDomainTest {
     @Test
     @DisplayName("0원_충전_예외처리_테스트")
     void zeroPointChargeThrowException() {
-        assertThatThrownBy(() -> point.charge(0))
+        assertThatThrownBy(() -> point.charge(0L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(PointMessage.INVALID_AMOUNT);
     }
@@ -31,7 +32,7 @@ class PointDomainTest {
     @Test
     @DisplayName("음수_충전_예외처리_테스트")
     void negativePointChargeThrowException() {
-        assertThatThrownBy(() -> point.charge(-100))
+        assertThatThrownBy(() -> point.charge(-100L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(PointMessage.INVALID_AMOUNT);
     }
@@ -39,7 +40,7 @@ class PointDomainTest {
     @Test
     @DisplayName("0원_사용_예외처리_테스트")
     void zeroPointUseThrowException() {
-        assertThatThrownBy(() -> point.use(0))
+        assertThatThrownBy(() -> point.use(0L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(PointMessage.INVALID_AMOUNT);
     }
@@ -47,7 +48,7 @@ class PointDomainTest {
     @Test
     @DisplayName("음수_사용_예외처리_테스트")
     void negativePointUseThrowException() {
-        assertThatThrownBy(() -> point.use(-500))
+        assertThatThrownBy(() -> point.use(-500L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(PointMessage.INVALID_AMOUNT);
     }
