@@ -9,11 +9,11 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/points")
+@RequestMapping("")
 public class PointController {
 
-    @GetMapping("")
-    public ApiResponse getPoint(@RequestParam Long userId) {
+    @GetMapping("/users/{userId}/point")
+    public ApiResponse getPoint(@PathVariable Long userId) {
         Map<String, Object> response = new HashMap<>();
         response.put("userId", userId);
         response.put("point", 10000);
@@ -22,9 +22,8 @@ public class PointController {
         return ApiResponse.success(response);
     }
 
-    @PatchMapping("/{userId}")
-    public ApiResponse charge(@RequestBody Map<String, Object> request) {
-        Long userId = Long.valueOf(request.get("userId").toString());
+    @PostMapping("/users/{userId}/point")
+    public ApiResponse charge(@PathVariable Long userId, @RequestBody Map<String, Object> request) {
         Long amount = Long.valueOf(request.get("amount").toString());
 
         Map<String, Object> response = new HashMap<>();
@@ -33,16 +32,5 @@ public class PointController {
         response.put("updatedAt", LocalDateTime.now());
 
         return ApiResponse.success(response);
-    }
-
-    @GetMapping("/histories")
-    public ApiResponse getHistories(@RequestParam Long userId) {
-        Map<String, Object> history = new HashMap<>();
-        history.put("type", "CHARGE");
-        history.put("amount", 10000);
-        history.put("createdAt", LocalDateTime.now());
-        System.out.println(history);
-
-        return ApiResponse.success(java.util.List.of(history));
     }
 }
