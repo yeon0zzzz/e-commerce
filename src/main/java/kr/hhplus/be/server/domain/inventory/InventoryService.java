@@ -1,6 +1,9 @@
 package kr.hhplus.be.server.domain.inventory;
 
+import kr.hhplus.be.server.domain.order.OrderItem;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 public class InventoryService {
@@ -8,14 +11,36 @@ public class InventoryService {
     private final InventoryRepository inventoryRepository;
 
     public Inventory getInventory(Long productId) {
-        Inventory inventory = inventoryRepository.findByProductId(productId);
-
-        return inventory;
+        return inventoryRepository.findByProductId(productId);
     }
 
     public void validateStockEnough(Long productId, Long requestedQuantity) {
         Inventory inventory = inventoryRepository.findByProductId(productId);
 
         inventory.validateStockEnough(requestedQuantity);
+    }
+
+    public void reserve(Long productId, Long requestedQuantity) {
+
+        Inventory inventory = inventoryRepository.findByProductId(productId);
+
+        Inventory reservedInventory = inventory.reserve(requestedQuantity);
+
+        inventoryRepository.save(reservedInventory);
+    }
+
+    public void reserveAll(List<OrderItem> items) {
+        items.forEach(item -> reserve(item.productId(), item.quantity()));
+    }
+
+    public Inventory deduct(Long productId, Long requestedQuantity) {
+
+        Inventory inventory = inventoryRepository.findByProductId(productId);
+
+        Inventory deductInventory = inventory.deduct(requestedQuantity);
+
+        inventoryRepository.save(deductInventory);
+
+        return deductInventory;
     }
 }
