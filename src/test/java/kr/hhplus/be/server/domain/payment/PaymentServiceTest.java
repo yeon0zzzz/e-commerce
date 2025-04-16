@@ -3,6 +3,7 @@ package kr.hhplus.be.server.domain.payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,7 +15,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -35,16 +38,20 @@ class PaymentServiceTest {
         BigDecimal amount = BigDecimal.valueOf(5000);
         PaymentMethod method = PaymentMethod.POINT;
 
+        ArgumentCaptor<Payment> captor = ArgumentCaptor.forClass(Payment.class);
         given(paymentRepository.save(any(Payment.class)))
                 .willAnswer(invocation -> invocation.getArgument(0));
 
         // when
-        Payment result = paymentService.requestPayment(orderId, amount, method);
+        paymentService.requestPayment(orderId, amount, method);
 
         // then
-        assertThat(result.status()).isEqualTo(PaymentStatus.PENDING);
-        assertThat(result.paidAmount()).isEqualByComparingTo(amount);
-        assertThat(result.method()).isEqualTo(method);
+        verify(paymentRepository).save(captor.capture());
+        Payment savedPayment = captor.getValue();
+
+        assertThat(savedPayment.status()).isEqualTo(PaymentStatus.PENDING);
+        assertThat(savedPayment.paidAmount()).isEqualByComparingTo(amount);
+        assertThat(savedPayment.method()).isEqualTo(method);
     }
 
     @Test
@@ -64,14 +71,18 @@ class PaymentServiceTest {
                 .updatedAt(LocalDateTime.now())
                 .build();
 
+        ArgumentCaptor<Payment> captor = ArgumentCaptor.forClass(Payment.class);
         given(paymentRepository.findByOrderId(orderId)).willReturn(pending);
         given(paymentRepository.save(any(Payment.class))).willAnswer(invocation -> invocation.getArgument(0));
 
         // when
-        Payment completed = paymentService.completePayment(orderId, amount);
+        paymentService.completePayment(orderId, amount);
 
         // then
-        assertThat(completed.status()).isEqualTo(PaymentStatus.SUCCESS);
+        verify(paymentRepository).save(captor.capture());
+        Payment savedPayment = captor.getValue();
+
+        assertThat(savedPayment.status()).isEqualTo(PaymentStatus.SUCCESS);
     }
 
     @Test
