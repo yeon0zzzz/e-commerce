@@ -21,4 +21,8 @@ public class CouponService {
 
         return issueCoupon;
     }
+
+    public Coupon findByCouponId(Long couponId) {
+        return couponRepository.findById(couponId);
+    }
 }
