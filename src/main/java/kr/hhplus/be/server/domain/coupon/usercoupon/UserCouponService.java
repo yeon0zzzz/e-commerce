@@ -25,4 +25,8 @@ public class UserCouponService {
     public List<UserCoupon> findUsableByUserId(Long userId) {
         return userCouponRepository.findAllByUserIdAndUsedIsFalse(userId);
     }
+
+    public UserCoupon findByUserCouponId(Long userCouponId) {
+        return userCouponRepository.findById(userCouponId);
+    }
 }
