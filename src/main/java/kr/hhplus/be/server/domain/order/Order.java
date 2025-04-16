@@ -13,7 +13,6 @@ public record Order(
         BigDecimal totalAmount,
         BigDecimal discountAmount,
         BigDecimal finalAmount,
-        Long usedPoint,
         OrderStatus status,
         LocalDateTime createdAt,
         LocalDateTime updatedAt

@@ -52,7 +52,6 @@ public class OrderServiceTest {
                 .totalAmount(BigDecimal.valueOf(10000))
                 .discountAmount(discountAmount)
                 .finalAmount(BigDecimal.valueOf(8000))
-                .usedPoint(usedPoint)
                 .status(OrderStatus.CREATED)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
@@ -61,7 +60,7 @@ public class OrderServiceTest {
         given(orderRepository.save(any(Order.class))).willReturn(fakeOrder);
 
         // when
-        Order result = orderService.createOrder(userId, List.of(item1), discountAmount, usedPoint);
+        Order result = orderService.createOrder(userId, List.of(item1), discountAmount);
 
         // then
         assertThat(result.orderId()).isEqualTo(999L);

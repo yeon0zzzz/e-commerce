@@ -13,7 +13,7 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final OrderEventRepository orderEventRepository;
 
-    public Order createOrder(Long userId, List<OrderItem> items, BigDecimal discountAmount, Long usedPoint) {
+    public Order createOrder(Long userId, List<OrderItem> items, BigDecimal discountAmount) {
         BigDecimal totalAmount = calculateTotalAmount(items);
         BigDecimal finalAmount = totalAmount.subtract(discountAmount).max(BigDecimal.ZERO);
 
@@ -23,7 +23,6 @@ public class OrderService {
                 .totalAmount(totalAmount)
                 .discountAmount(discountAmount)
                 .finalAmount(finalAmount)
-                .usedPoint(usedPoint)
                 .status(OrderStatus.CREATED)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
@@ -45,11 +44,12 @@ public class OrderService {
         orderItemRepository.saveAll(orderItems);
 
         // 주문 생성 이벤트 저장
-        orderEventRepository.save(OrderEvent.builder()
+        OrderEvent orderEvent = OrderEvent.builder()
                 .orderId(savedOrder.orderId())
                 .status(OrderStatus.CREATED)
                 .changedAt(LocalDateTime.now())
-                .build());
+                .build();
+        orderEventRepository.save(orderEvent);
 
         return savedOrder;
     }

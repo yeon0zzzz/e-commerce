@@ -45,7 +45,6 @@ public class OrderDomainTest {
                 .totalAmount(BigDecimal.valueOf(10000))
                 .discountAmount(BigDecimal.valueOf(2000))
                 .finalAmount(BigDecimal.valueOf(8000))
-                .usedPoint(0L)
                 .status(status)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
