@@ -23,6 +23,8 @@ public class ApiResponse {
         return new ApiResponse(200, "SUCCESS", data);
     }
 
+    public static ApiResponse success(Object data) {return new ApiResponse(200, "SUCCESS", data);}
+
     public static ApiResponse error(int code, String message) {
         return new ApiResponse(code, message, null);
     }

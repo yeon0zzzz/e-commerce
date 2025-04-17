@@ -1,59 +1,30 @@
 package kr.hhplus.be.server.interfaces.order;
 
+import kr.hhplus.be.server.application.order.OrderFacade;
+import kr.hhplus.be.server.application.order.OrderPaymentCommand;
 import kr.hhplus.be.server.common.ApiResponse;
+import kr.hhplus.be.server.domain.order.Order;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/orders")
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/orders")
 public class OrderController {
 
-    @GetMapping("")
-    public ApiResponse getOrders(@PathVariable Long orderId) {
-        Map<String, Object> order = new HashMap<>();
-        order.put("orderId", orderId);
-        order.put("userId", 1);
-        order.put("finalAmount", 15000);
-        order.put("status", "PAID");
-        order.put("createdAt", LocalDateTime.now());
+    private final OrderFacade orderFacade;
 
-        return ApiResponse.success(order);
-    }
+    @PostMapping("/payment")
+    public ApiResponse orderPayment(@RequestBody OrderPaymentDto.Request request) {
 
-    @PostMapping("")
-    public ApiResponse createOrder(@RequestBody Map<String, Object> request) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("orderId", 1001);
-        response.put("finalAmount", 15000);
-        response.put("createdAt", LocalDateTime.now());
+        // 1. 클라이언트의 요청은 DTO 로 받아서 응용 계층 입력 객체로 변환 (Request -> Command)
+        OrderPaymentCommand command = request.toCommand();
 
-        return ApiResponse.success(response);
-    }
+        // 2. 응용 계층 서비스 호출 및 결과 반환 (Domain domain = Facade.doSomething(command)
+        Order order = orderFacade.orderPayment(command);
 
-    @GetMapping("/{orderId}")
-    public ApiResponse getOrdersDetail(@PathVariable Long userId) {
-        Map<String, Object> order = new HashMap<>();
-        order.put("orderId", 1001);
-        order.put("finalAmount", 15000);
-        order.put("createdAt", LocalDateTime.now());
-
-        return ApiResponse.success(List.of(order));
-    }
-
-    @PatchMapping("/{orderId}/cancel")
-    public ApiResponse cancelOrder(@PathVariable Long orderId) {
-        Map<String, Object> event1 = new HashMap<>();
-        event1.put("status", "CREATED");
-        event1.put("changedAt", LocalDateTime.now().minusMinutes(10));
-
-        Map<String, Object> event2 = new HashMap<>();
-        event2.put("status", "PAID");
-        event2.put("changedAt", LocalDateTime.now());
-
-        return ApiResponse.success(List.of(event1, event2));
+        // 3. return -> 결과 반환 DTO 를 이용하여 응답 객체로 변환 (Domain -> Response)
+        return ApiResponse.success(OrderPaymentDto.Response.of(order));
     }
 }
