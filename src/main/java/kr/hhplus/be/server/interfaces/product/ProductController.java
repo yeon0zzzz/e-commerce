@@ -25,18 +25,6 @@ public class ProductController {
         return ApiResponse.success(List.of(product));
     }
 
-    @GetMapping("/{productId}")
-    public ApiResponse getProductDetail(@PathVariable Long productId) {
-        Map<String, Object> product = new HashMap<>();
-        product.put("productId", productId);
-        product.put("name", "상품 A");
-        product.put("description", "이 상품은 A입니다.");
-        product.put("price", 10000);
-        product.put("status", "ACTIVE");
-
-        return ApiResponse.success(product);
-    }
-
     @GetMapping("/popular")
     public ApiResponse getPopularProducts() {
         Map<String, Object> product = new HashMap<>();
@@ -45,15 +33,5 @@ public class ProductController {
         product.put("salesCount", 50);
 
         return ApiResponse.success(List.of(product));
-    }
-
-    @GetMapping("/{productId}/inventory")
-    public ApiResponse getInventory(@PathVariable Long productId) {
-        Map<String, Object> inventory = new HashMap<>();
-        inventory.put("productId", productId);
-        inventory.put("quantity", 100);
-        inventory.put("reserved", 10);
-
-        return ApiResponse.success(inventory);
     }
 }
