@@ -32,25 +32,36 @@ public class OrderFacade {
     private final PaymentService paymentService;
 
     @Transactional
-    public Order orderPayment(Long userId, List<OrderItem> items, Long userCouponId, PaymentMethod paymentMethod) {
+    public Order orderPayment(OrderPaymentCommand command) {
+
+        // 상품 목록 인스턴스 생성
+        List<OrderItem> items = command.items()
+                .stream()
+                .map(item -> OrderItem.builder()
+                        .productId(item.productId())
+                        .quantity(item.quantity())
+                        .price(item.price())
+                        .totalPrice(OrderItem.calculateTotal(item.price(), item.quantity()))
+                        .build())
+                .toList();
 
         // 1. 상품 재고 조회
         items.forEach(item ->
                 inventoryService.validateStockEnough(item.productId(), item.quantity()));
         // 2. 사용자 쿠폰 조회
-        UserCoupon userCoupon = userCouponService.findByUserCouponId(userCouponId);
+        UserCoupon userCoupon = userCouponService.findByUserCouponId(command.userCouponId());
         // 3. 쿠폰 조회
         Coupon coupon = couponService.findByCouponId(userCoupon.couponId());
         // 4. 주문 생성 (userId, orderItem, discountAmount)
-        Order order = orderService.createOrder(userId, items, coupon.discountAmount());
+        Order order = orderService.create(command.userId(), items, coupon.discountAmount());
         // 5. 결제 요청
-        paymentService.requestPayment(order.orderId(), order.finalAmount(), paymentMethod);
+        paymentService.request(order.orderId(), order.finalAmount(), command.paymentMethod());
         // 6. 상품 재고 점유 (예약)
         inventoryService.reserveAll(items);
         // 7. 쿠폰 사용 처리
-        userCouponService.use(userCouponId);
+        userCouponService.use(command.userCouponId());
         // 8. 결제 성공 처리
-        paymentService.completePayment(order.orderId(), order.finalAmount());
+        paymentService.complete(order.orderId(), order.finalAmount());
 
         return order;
     }

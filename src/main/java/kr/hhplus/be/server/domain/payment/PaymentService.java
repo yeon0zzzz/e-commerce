@@ -16,7 +16,7 @@ public class PaymentService {
     /**
      * 결제 요청 시 PENDING 상태로 저장
      */
-    public void requestPayment(Long orderId, BigDecimal amount, PaymentMethod method) {
+    public void request(Long orderId, BigDecimal amount, PaymentMethod method) {
         Payment payment = Payment.builder()
                 .orderId(orderId)
                 .status(PaymentStatus.PENDING)
@@ -31,7 +31,7 @@ public class PaymentService {
     /**
      * 결제 완료 처리
      */
-    public void completePayment(Long orderId, BigDecimal expectedAmount) {
+    public void complete(Long orderId, BigDecimal expectedAmount) {
         Payment payment = paymentRepository.findByOrderId(orderId);
         payment.validatePayable(); // 상태 검증
         Payment completed = payment.complete(expectedAmount); // 금액 일치 및 상태 변경

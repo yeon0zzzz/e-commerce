@@ -20,7 +20,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public List<Product> getPopular(int limit) {
+    public List<Product> findPopular(int limit) {
         return productRepository.findPopularProducts(limit);
     }
 }

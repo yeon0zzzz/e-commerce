@@ -13,7 +13,7 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final OrderEventRepository orderEventRepository;
 
-    public Order createOrder(Long userId, List<OrderItem> items, BigDecimal discountAmount) {
+    public Order create(Long userId, List<OrderItem> items, BigDecimal discountAmount) {
         BigDecimal totalAmount = calculateTotalAmount(items);
         BigDecimal finalAmount = totalAmount.subtract(discountAmount).max(BigDecimal.ZERO);
 
