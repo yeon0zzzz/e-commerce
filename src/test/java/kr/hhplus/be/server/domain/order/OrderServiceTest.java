@@ -60,7 +60,7 @@ public class OrderServiceTest {
         given(orderRepository.save(any(Order.class))).willReturn(fakeOrder);
 
         // when
-        Order result = orderService.createOrder(userId, List.of(item1), discountAmount);
+        Order result = orderService.create(userId, List.of(item1), discountAmount);
 
         // then
         assertThat(result.orderId()).isEqualTo(999L);

@@ -43,7 +43,7 @@ class PaymentServiceTest {
                 .willAnswer(invocation -> invocation.getArgument(0));
 
         // when
-        paymentService.requestPayment(orderId, amount, method);
+        paymentService.request(orderId, amount, method);
 
         // then
         verify(paymentRepository).save(captor.capture());
@@ -76,7 +76,7 @@ class PaymentServiceTest {
         given(paymentRepository.save(any(Payment.class))).willAnswer(invocation -> invocation.getArgument(0));
 
         // when
-        paymentService.completePayment(orderId, amount);
+        paymentService.complete(orderId, amount);
 
         // then
         verify(paymentRepository).save(captor.capture());
@@ -105,7 +105,7 @@ class PaymentServiceTest {
         given(paymentRepository.findByOrderId(orderId)).willReturn(pending);
 
         // expect
-        assertThatThrownBy(() -> paymentService.completePayment(orderId, wrong))
+        assertThatThrownBy(() -> paymentService.complete(orderId, wrong))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(PaymentMessage.MISMATCH_AMOUNT);
     }
@@ -129,7 +129,7 @@ class PaymentServiceTest {
         given(paymentRepository.findByOrderId(orderId)).willReturn(paid);
 
         // expect
-        assertThatThrownBy(() -> paymentService.completePayment(orderId, amount))
+        assertThatThrownBy(() -> paymentService.complete(orderId, amount))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage(PaymentMessage.NOT_PAYABLE);
     }
