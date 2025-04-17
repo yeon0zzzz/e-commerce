@@ -1,12 +1,8 @@
 package kr.hhplus.be.server.infra.point.jpa;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import kr.hhplus.be.server.domain.point.Point;
 import lombok.*;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
@@ -18,15 +14,21 @@ public class PointEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "point_id")
+    private Long pointId;
+
     @Column(name = "user_id")
-    private long userId;
+    private Long userId;
+
     @Column(name = "point")
-    private long point;
+    private Long point;
+
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     public static PointEntity toEntity(Point point) {
         PointEntity entity = new PointEntity();
+        entity.pointId = point.pointId();
         entity.userId = point.userId();
         entity.point = point.point();
         entity.updatedAt = point.updatedAt();
@@ -35,6 +37,7 @@ public class PointEntity {
 
     public static Point toDomain (PointEntity entity){
         return Point.builder()
+                .pointId(entity.getPointId())
                 .userId(entity.getUserId())
                 .point(entity.getPoint())
                 .updatedAt(entity.getUpdatedAt())
