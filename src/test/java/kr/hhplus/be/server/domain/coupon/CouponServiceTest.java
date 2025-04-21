@@ -45,13 +45,13 @@ class CouponServiceTest {
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        given(couponRepository.findById(couponId)).willReturn(coupon);
+        given(couponRepository.findByCouponId(couponId)).willReturn(coupon);
 
         //when
         Coupon result = couponService.issue(couponId);
 
         //then
         assertThat(result.issuedCount()).isEqualTo(1);
-        verify(couponRepository).findById(eq(couponId));
+        verify(couponRepository).findByCouponId(eq(couponId));
     }
 }

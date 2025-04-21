@@ -11,7 +11,7 @@ public class CouponService {
 
     public Coupon issue(Long couponId) {
 
-        Coupon coupon = couponRepository.findById(couponId);
+        Coupon coupon = couponRepository.findByCouponId(couponId);
 
         /*
          * TODO: 동시성 제어
@@ -24,6 +24,6 @@ public class CouponService {
     }
 
     public Coupon findByCouponId(Long couponId) {
-        return couponRepository.findById(couponId);
+        return couponRepository.findByCouponId(couponId);
     }
 }

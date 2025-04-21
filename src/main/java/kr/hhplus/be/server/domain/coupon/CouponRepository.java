@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface CouponRepository {
-    Coupon findById(Long couponId);
-    Coupon save(Coupon coupon);
-    List<Coupon> findAllAvailable(LocalDateTime now);
+    Coupon findByCouponId(Long couponId);
+    void save(Coupon coupon);
 }
