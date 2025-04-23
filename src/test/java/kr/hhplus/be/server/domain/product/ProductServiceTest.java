@@ -39,7 +39,7 @@ class ProductServiceTest {
         given(productRepository.findById(1L)).willReturn(mockProduct);
 
         // when
-        Product result = productService.getById(1L);
+        Product result = productService.findById(1L);
 
         // then
         assertThat(result.name()).isEqualTo("테스트 상품");
