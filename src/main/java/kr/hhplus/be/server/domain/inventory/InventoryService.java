@@ -3,6 +3,7 @@ package kr.hhplus.be.server.domain.inventory;
 import kr.hhplus.be.server.domain.order.OrderItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,7 +14,8 @@ public class InventoryService {
 
     private final InventoryRepository inventoryRepository;
 
-    public Inventory getInventory(Long productId) {
+    @Transactional(readOnly = true)
+    public Inventory findByProductId(Long productId) {
         return inventoryRepository.findByProductId(productId);
     }
 
@@ -45,5 +47,9 @@ public class InventoryService {
         inventoryRepository.save(deductInventory);
 
         return deductInventory;
+    }
+
+    public Inventory save(Inventory inventory) {
+        return inventoryRepository.save(inventory);
     }
 }

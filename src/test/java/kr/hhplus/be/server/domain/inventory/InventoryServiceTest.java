@@ -42,7 +42,7 @@ public class InventoryServiceTest {
         given(inventoryRepository.findByProductId(1L)).willReturn(inventory);
 
         // when
-        Inventory result = inventoryService.getInventory(1L);
+        Inventory result = inventoryService.findByProductId(1L);
 
         // then
         assertThat(result.availableQuantity()).isEqualTo(60);
@@ -58,7 +58,7 @@ public class InventoryServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> inventoryService.getInventory(999L))
+        assertThatThrownBy(() -> inventoryService.findByProductId(999L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(InventoryMessage.INVENTORY_NOT_FOUND);
     }
