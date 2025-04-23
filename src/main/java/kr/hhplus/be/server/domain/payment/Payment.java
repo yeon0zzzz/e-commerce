@@ -9,11 +9,8 @@ import java.time.LocalDateTime;
 public record Payment(
         Long paymentId,
         Long orderId,
-        PaymentMethod method,
         BigDecimal paidAmount,
-        LocalDateTime paidAt,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        LocalDateTime paidAt
 ) {
     public void validateAmount(BigDecimal expected) {
         if (!this.paidAmount.equals(expected)) {

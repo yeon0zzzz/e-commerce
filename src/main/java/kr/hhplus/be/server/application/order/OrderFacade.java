@@ -51,7 +51,7 @@ public class OrderFacade {
         Order order = orderService.create(command.userId(), items, command.discountAmount());
 
         // 4. 결제 처리
-        paymentService.pay(order.orderId(), order.finalAmount(), command.paymentMethod());
+        paymentService.pay(order.orderId(), order.finalAmount());
 
         return order;
     }

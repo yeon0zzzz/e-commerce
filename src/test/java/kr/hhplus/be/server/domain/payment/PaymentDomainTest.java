@@ -45,11 +45,8 @@ public class PaymentDomainTest {
         return Payment.builder()
                 .paymentId(1L)
                 .orderId(123L)
-                .method(PaymentMethod.POINT)
                 .paidAmount(amount)
                 .paidAt(LocalDateTime.now())
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
     }
 }

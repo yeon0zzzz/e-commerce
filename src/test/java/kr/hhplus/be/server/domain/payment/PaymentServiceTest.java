@@ -36,14 +36,13 @@ class PaymentServiceTest {
         // given
         Long orderId = 1L;
         BigDecimal amount = BigDecimal.valueOf(5000);
-        PaymentMethod method = PaymentMethod.POINT;
 
         ArgumentCaptor<Payment> captor = ArgumentCaptor.forClass(Payment.class);
         given(paymentRepository.save(any(Payment.class)))
                 .willAnswer(invocation -> invocation.getArgument(0));
 
         // when
-        paymentService.pay(orderId, amount, method);
+        paymentService.pay(orderId, amount);
 
         // then
         verify(paymentRepository).save(captor.capture());
@@ -51,7 +50,6 @@ class PaymentServiceTest {
 
         assertThat(saved.orderId()).isEqualTo(orderId);
         assertThat(saved.paidAmount()).isEqualByComparingTo(amount);
-        assertThat(saved.method()).isEqualTo(method);
         assertThat(saved.paidAt()).isNotNull();
     }
 }

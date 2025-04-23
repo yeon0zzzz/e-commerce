@@ -3,7 +3,6 @@ package kr.hhplus.be.server.interfaces.order;
 import kr.hhplus.be.server.application.order.OrderPaymentCommand;
 import kr.hhplus.be.server.application.order.OrderProductCommand;
 import kr.hhplus.be.server.domain.order.Order;
-import kr.hhplus.be.server.domain.payment.PaymentMethod;
 import lombok.Builder;
 
 import java.math.BigDecimal;
