@@ -5,7 +5,9 @@ import java.util.List;
 public interface ProductRepository {
     Product findById(Long productId);
 
+    Product save(Product product);
+
     List<Product> findAll();
 
-    List<Product> findPopularProducts(int limit);  // 최근 3일 기준
+    List<Product> findTop5PopularProducts();  // 최근 3일 기준
 }
