@@ -9,8 +9,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
+@Table(name = "coupon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Builder
 @AllArgsConstructor
 public class CouponEntity {
