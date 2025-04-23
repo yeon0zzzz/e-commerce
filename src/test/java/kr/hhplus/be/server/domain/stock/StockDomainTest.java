@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.domain.inventory;
+package kr.hhplus.be.server.domain.stock;
 
 
 import org.junit.jupiter.api.DisplayName;
@@ -14,36 +14,34 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("재고_도메인_유효성_검증_단위_테스트")
-public class InventoryDomainTest {
+public class StockDomainTest {
 
     @Test
     @DisplayName("사용_가능_재고_계산")
-    void availableProductInventory() {
-        Inventory inventory = Inventory.builder()
-                .inventoryId(1L)
-                .productId(100L)
-                .quantity(50)
-                .reservedQuantity(20)
+    void availableProductStock() {
+        Stock stock = Stock.builder()
+                .stockId(1L)
+                .productId(1L)
+                .quantity(1)
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        assertThat(inventory.availableQuantity()).isEqualTo(30);
+        assertThat(stock.quantity()).isEqualTo(1);
     }
 
     @Test
     @DisplayName("요청_수량_초과시_예외발생")
     void quantityExceedThrowException() {
-        Inventory inventory = Inventory.builder()
-                .inventoryId(1L)
-                .productId(100L)
-                .quantity(10)
-                .reservedQuantity(5)
+        Stock stock = Stock.builder()
+                .stockId(1L)
+                .productId(1L)
+                .quantity(1)
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        assertThatThrownBy(() -> inventory.validateStockEnough(10))
+        assertThatThrownBy(() -> stock.validateStockEnough(10))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage(InventoryMessage.STOCK_NOT_ENOUGH);
+                .hasMessage(StockMessage.STOCK_NOT_ENOUGH);
     }
 
 }

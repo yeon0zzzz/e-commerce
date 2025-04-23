@@ -1,15 +1,12 @@
 package kr.hhplus.be.server.application.order;
 
 
-import kr.hhplus.be.server.domain.coupon.CouponService;
 import kr.hhplus.be.server.domain.coupon.usercoupon.UserCouponService;
-import kr.hhplus.be.server.domain.inventory.InventoryService;
+import kr.hhplus.be.server.domain.stock.StockService;
 import kr.hhplus.be.server.domain.order.Order;
 import kr.hhplus.be.server.domain.order.OrderItem;
 import kr.hhplus.be.server.domain.order.OrderService;
 import kr.hhplus.be.server.domain.payment.PaymentService;
-import kr.hhplus.be.server.domain.point.PointService;
-import kr.hhplus.be.server.domain.product.ProductService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderFacade {
 
-    private final InventoryService inventoryService;
+    private final StockService stockService;
     private final UserCouponService userCouponService;
     private final OrderService orderService;
     private final PaymentService paymentService;
@@ -42,7 +39,7 @@ public class OrderFacade {
                 .toList();
 
         // 1. 재고 차감 (예약)
-        inventoryService.reserveAll(items);
+        stockService.deductAll(items);
 
         // 2. 쿠폰 사용
         userCouponService.use(command.userCouponId());
