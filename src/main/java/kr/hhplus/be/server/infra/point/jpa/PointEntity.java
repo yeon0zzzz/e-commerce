@@ -8,8 +8,11 @@ import java.time.LocalDateTime;
 
 
 @Entity
+@Table(name = "point")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Builder
+@AllArgsConstructor
 public class PointEntity {
 
     @Id
@@ -27,12 +30,12 @@ public class PointEntity {
     private LocalDateTime updatedAt;
 
     public static PointEntity toEntity(Point point) {
-        PointEntity entity = new PointEntity();
-        entity.pointId = point.pointId();
-        entity.userId = point.userId();
-        entity.point = point.point();
-        entity.updatedAt = point.updatedAt();
-        return entity;
+        return PointEntity.builder()
+                .pointId(point.pointId())
+                .userId(point.userId())
+                .point(point.point())
+                .updatedAt(point.updatedAt())
+                .build();
     }
 
     public static Point toDomain (PointEntity entity){
