@@ -13,8 +13,6 @@ public class CouponService {
     public Coupon issue(Long couponId) {
 
         Coupon coupon = couponRepository.findById(couponId);
-        System.out.println(" ### service ##### ");
-        System.out.println(coupon);
 
         /*
          * TODO: 동시성 제어
