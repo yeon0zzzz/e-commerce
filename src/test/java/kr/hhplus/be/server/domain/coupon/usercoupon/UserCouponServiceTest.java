@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.domain.coupon.usercoupon;
 
+import kr.hhplus.be.server.domain.coupon.Coupon;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -43,6 +45,8 @@ class UserCouponServiceTest {
                 .build();
 
         given(userCouponRepository.findById(userCouponId)).willReturn(userCoupon);
+        given(userCouponRepository.save(any(UserCoupon.class)))
+                .willAnswer(invocation -> invocation.getArgument(0));
 
         //when
         UserCoupon result = userCouponService.use(userCouponId);
