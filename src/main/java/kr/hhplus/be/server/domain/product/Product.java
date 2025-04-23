@@ -10,11 +10,8 @@ import java.time.LocalDateTime;
 public record Product(
         Long productId,
         String name,
-        String description,
         BigDecimal price,
-        ProductStatus productStatus,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        ProductStatus productStatus
 ) {
     public void validateIsActive() {
         if (!ProductStatus.ACTIVE.equals(this.productStatus)) {

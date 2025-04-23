@@ -15,8 +15,7 @@ public class OrderPaymentDto {
     public record Request(
             Long userId,
             List<ProductRequest> items,
-            Long userCouponId,
-            PaymentMethod paymentMethod
+            Long userCouponId
     ) {
         public OrderPaymentCommand toCommand() {
             return OrderPaymentCommand.builder()
@@ -28,7 +27,6 @@ public class OrderPaymentDto {
                                     .build())
                             .toList())
                     .userCouponId(userCouponId)
-                    .paymentMethod(paymentMethod)
                     .build();
         }
     }

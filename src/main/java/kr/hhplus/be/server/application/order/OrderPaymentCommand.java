@@ -11,6 +11,5 @@ public record OrderPaymentCommand(
         Long userId,
         List<OrderProductCommand> items,
         Long userCouponId,
-        BigDecimal discountAmount,
-        PaymentMethod paymentMethod
+        BigDecimal discountAmount
 ) {}

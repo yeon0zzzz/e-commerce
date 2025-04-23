@@ -21,8 +21,6 @@ class ProductDomainTest {
             .name("노출금지 상품")
             .price(BigDecimal.valueOf(10000))
             .productStatus(ProductStatus.INACTIVE)
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
             .build();
 
     @Test

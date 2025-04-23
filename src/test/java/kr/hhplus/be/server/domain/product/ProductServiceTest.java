@@ -34,8 +34,6 @@ class ProductServiceTest {
                 .name("테스트 상품")
                 .price(BigDecimal.valueOf(5000))
                 .productStatus(ProductStatus.ACTIVE)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
 
         given(productRepository.findById(1L)).willReturn(mockProduct);
