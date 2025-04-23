@@ -39,7 +39,6 @@ public class UserCouponEntity {
     public static UserCouponEntity toEntity(UserCoupon userCoupon) {
         UserCouponEntity entity = new UserCouponEntity();
         entity.userCouponId = userCoupon.userCouponId();
-        entity.couponId = userCoupon.couponId();
         entity.userId = userCoupon.userId();
         entity.couponId = userCoupon.couponId();
         entity.used = userCoupon.used();
@@ -50,7 +49,7 @@ public class UserCouponEntity {
 
     public static UserCoupon toDomain(UserCouponEntity entity) {
         return UserCoupon.builder()
-                .userCouponId(entity.getCouponId())
+                .userCouponId(entity.getUserCouponId())
                 .userId(entity.getUserId())
                 .couponId(entity.getCouponId())
                 .used(entity.isUsed())
