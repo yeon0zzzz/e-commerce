@@ -3,10 +3,7 @@ package kr.hhplus.be.server.infra.coupon.jpa;
 import jakarta.persistence.*;
 import kr.hhplus.be.server.domain.coupon.Coupon;
 import kr.hhplus.be.server.domain.coupon.CouponStatus;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,6 +11,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 public class CouponEntity {
 
     @Id
@@ -49,19 +48,18 @@ public class CouponEntity {
     private LocalDateTime updatedAt;
 
     public static CouponEntity toEntity(Coupon coupon) {
-        CouponEntity entity = new CouponEntity();
-        entity.couponId = coupon.couponId();
-        entity.name = coupon.name();
-        entity.discountAmount = coupon.discountAmount();
-        entity.issuedQuantity = coupon.issuedQuantity();
-        entity.issuedCount = coupon.issuedCount();
-        entity.couponStatus = coupon.couponStatus();
-        entity.activatedAt = coupon.activatedAt();
-        entity.expiredAt = coupon.expiredAt();
-        entity.createdAt = coupon.createdAt();
-        entity.updatedAt = coupon.updatedAt();
-
-        return entity;
+        return CouponEntity.builder()
+                .couponId(coupon.couponId())
+                .name(coupon.name())
+                .discountAmount(coupon.discountAmount())
+                .issuedQuantity(coupon.issuedQuantity())
+                .issuedCount(coupon.issuedCount())
+                .couponStatus(coupon.couponStatus())
+                .activatedAt(coupon.activatedAt())
+                .expiredAt(coupon.expiredAt())
+                .createdAt(coupon.createdAt())
+                .updatedAt(coupon.updatedAt())
+                .build();
     }
 
     public static Coupon toDomain(CouponEntity entity) {

@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -46,6 +47,8 @@ class CouponServiceTest {
                 .build();
 
         given(couponRepository.findById(couponId)).willReturn(coupon);
+        given(couponRepository.save(any(Coupon.class)))
+                .willAnswer(invocation -> invocation.getArgument(0));
 
         //when
         Coupon result = couponService.issue(couponId);
