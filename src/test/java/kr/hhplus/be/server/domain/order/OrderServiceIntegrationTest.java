@@ -31,7 +31,7 @@ public class OrderServiceIntegrationTest {
                 .totalAmount(BigDecimal.valueOf(1000L))
                 .discountAmount(BigDecimal.valueOf(500L))
                 .finalAmount(BigDecimal.valueOf(500L))
-                .status(OrderStatus.CREATED)
+                .status(Order.OrderStatus.CREATED)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();

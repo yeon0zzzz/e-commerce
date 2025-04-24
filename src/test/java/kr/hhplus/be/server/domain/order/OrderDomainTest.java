@@ -18,14 +18,14 @@ public class OrderDomainTest {
     @Test
     @DisplayName("주문_상태가_CREATED일_경우_결제_가능")
     void validatePayableSuccess() {
-        Order order = createOrder(OrderStatus.CREATED);
+        Order order = createOrder(Order.OrderStatus.CREATED);
         assertThatCode(order::validatePayable).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("주문_상태가_PAID일_경우_결제_불가")
     void validatePayableFail() {
-        Order order = createOrder(OrderStatus.PAID);
+        Order order = createOrder(Order.OrderStatus.PAID);
         assertThatThrownBy(order::validatePayable)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage(OrderMessage.NOT_PAYABLE_STATUS);
@@ -34,11 +34,11 @@ public class OrderDomainTest {
     @Test
     @DisplayName("최종_결제_금액_계산")
     void calculateFinalAmountSuccess() {
-        Order order = createOrder(OrderStatus.CREATED);
+        Order order = createOrder(Order.OrderStatus.CREATED);
         assertThat(order.calculateFinalAmount()).isEqualByComparingTo("8000");
     }
 
-    private Order createOrder(OrderStatus status) {
+    private Order createOrder(Order.OrderStatus status) {
         return Order.builder()
                 .orderId(1L)
                 .userId(1L)

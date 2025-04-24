@@ -17,13 +17,32 @@ public record Order(
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
+    public enum OrderStatus {
+        CREATED,
+        PAID,
+        CANCELED,
+        COMPLETED
+    }
+
     public void validatePayable() {
-        if (status != OrderStatus.CREATED) {
+        if (status != Order.OrderStatus.CREATED) {
             throw new IllegalStateException(OrderMessage.NOT_PAYABLE_STATUS);
         }
     }
 
     public BigDecimal calculateFinalAmount() {
         return totalAmount.subtract(discountAmount).max(BigDecimal.ZERO);
+    }
+
+    public static Order create(Long userId, BigDecimal totalAmount, BigDecimal discountAmount) {
+        return Order.builder()
+                .userId(userId)
+                .totalAmount(totalAmount)
+                .discountAmount(discountAmount)
+                .finalAmount(totalAmount.subtract(discountAmount).max(BigDecimal.ZERO))
+                .status(Order.OrderStatus.CREATED)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
     }
 }

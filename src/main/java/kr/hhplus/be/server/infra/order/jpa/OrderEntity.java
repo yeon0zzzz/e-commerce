@@ -2,7 +2,6 @@ package kr.hhplus.be.server.infra.order.jpa;
 
 import jakarta.persistence.*;
 import kr.hhplus.be.server.domain.order.Order;
-import kr.hhplus.be.server.domain.order.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,7 +36,8 @@ public class OrderEntity {
     private BigDecimal finalAmount;
 
     @Column(name = "status")
-    private OrderStatus status;
+    @Enumerated(EnumType.STRING)
+    private Order.OrderStatus status;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

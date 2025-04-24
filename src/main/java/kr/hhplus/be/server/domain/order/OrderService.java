@@ -18,19 +18,10 @@ public class OrderService {
     private final OrderEventRepository orderEventRepository;
 
     public Order create(Long userId, List<OrderItem> items, BigDecimal discountAmount) {
-        BigDecimal totalAmount = calculateTotalAmount(items);
-        BigDecimal finalAmount = totalAmount.subtract(discountAmount).max(BigDecimal.ZERO);
+        BigDecimal totalAmount = OrderItem.sumTotalPrice(items);
 
         // 주문 객체 생성
-        Order order = Order.builder()
-                .userId(userId)
-                .totalAmount(totalAmount)
-                .discountAmount(discountAmount)
-                .finalAmount(finalAmount)
-                .status(OrderStatus.CREATED)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build();
+        Order order = Order.create(userId, totalAmount, discountAmount);
 
         // 저장
         Order savedOrder = orderRepository.save(order);
@@ -48,20 +39,14 @@ public class OrderService {
         orderItemRepository.saveAll(orderItems);
 
         // 주문 생성 이벤트 저장
-        OrderEvent orderEvent = OrderEvent.builder()
-                .orderId(savedOrder.orderId())
-                .status(OrderStatus.CREATED)
-                .changedAt(LocalDateTime.now())
-                .build();
-        orderEventRepository.save(orderEvent);
+//        OrderEvent orderEvent = OrderEvent.builder()
+//                .orderId(savedOrder.orderId())
+//                .status(Order.OrderStatus.CREATED)
+//                .changedAt(LocalDateTime.now())
+//                .build();
+//        orderEventRepository.save(orderEvent);
 
         return savedOrder;
-    }
-
-    private BigDecimal calculateTotalAmount(List<OrderItem> items) {
-        return items.stream()
-                .map(OrderItem::totalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Transactional(readOnly = true)

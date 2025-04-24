@@ -13,4 +13,10 @@ public record OrderEvent(
         OrderStatus status,
         LocalDateTime changedAt
 ) {
+    public enum OrderStatus {
+        CREATED,
+        PAID,
+        CANCELED,
+        COMPLETED
+    }
 }
