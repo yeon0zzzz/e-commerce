@@ -24,14 +24,16 @@ public class CouponConcurrencyTest {
     private CouponRepository couponRepository;
 
     @Test
-    @DisplayName("쿠폰 발급 동시성 이슈 발생")
+    @DisplayName("선착순 쿠폰 발급을 동시에 요청시 모든 요청에 대해 발급 되어야 한다.")
     void issueCouponConcurrencyFailTest() throws InterruptedException {
+
+        int threadCount = 100;
 
         Coupon coupon = Coupon.builder()
                 .couponId(null)
                 .name("동시성 쿠폰")
                 .discountAmount(BigDecimal.valueOf(1000))
-                .issuedQuantity(10)
+                .issuedQuantity(threadCount)
                 .issuedCount(0)
                 .couponStatus(CouponStatus.ACTIVE)
                 .activatedAt(LocalDateTime.now().minusDays(1))
@@ -41,12 +43,11 @@ public class CouponConcurrencyTest {
                 .build();
         Coupon savedCoupon = couponService.save(coupon);
 
-        int threadCount = 10;
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
 
         for (int i = 0; i < threadCount; i++) {
-            executor.execute(() -> {
+            executor.submit(() -> {
                 try {
                     couponService.issue(savedCoupon.couponId());
                 } finally {
@@ -58,6 +59,8 @@ public class CouponConcurrencyTest {
         latch.await();
 
         Coupon result = couponService.findById(savedCoupon.couponId());
+
+        // 0 + (100) = 100
         assertThat(result.issuedCount()).isEqualTo(threadCount);
 
     }

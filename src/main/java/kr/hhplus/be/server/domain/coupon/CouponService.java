@@ -10,19 +10,17 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
+    @Transactional
     public Coupon issue(Long couponId) {
 
         Coupon coupon = couponRepository.findById(couponId);
 
-        /*
-         * TODO: 동시성 제어
-         * */
         Coupon issueCoupon = coupon.issue();
 
-        return save(issueCoupon);
+        return couponRepository.save(issueCoupon);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Coupon findById(Long couponId) {
         return couponRepository.findById(couponId);
     }
