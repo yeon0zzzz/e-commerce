@@ -2,6 +2,7 @@ package kr.hhplus.be.server.domain.order;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -61,5 +62,10 @@ public class OrderService {
         return items.stream()
                 .map(OrderItem::totalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Transactional(readOnly = true)
+    public Order findById(Long orderId) {
+        return orderRepository.findById(orderId);
     }
 }
