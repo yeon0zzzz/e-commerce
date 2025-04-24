@@ -28,13 +28,7 @@ public class OrderService {
 
         // 항목 저장
         List<OrderItem> orderItems = items.stream()
-                .map(item -> OrderItem.builder()
-                        .orderId(savedOrder.orderId())
-                        .productId(item.productId())
-                        .quantity(item.quantity())
-                        .price(item.price())
-                        .totalPrice(OrderItem.calculateTotal(item.price(), item.quantity()))
-                        .build())
+                .map(item -> OrderItem.create(item.productId(), item.quantity(), item.price()))
                 .toList();
         orderItemRepository.saveAll(orderItems);
 

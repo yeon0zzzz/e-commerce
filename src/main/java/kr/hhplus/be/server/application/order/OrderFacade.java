@@ -30,15 +30,10 @@ public class OrderFacade {
         // 상품 목록 인스턴스 생성
         List<OrderItem> items = command.items()
                 .stream()
-                .map(item -> OrderItem.builder()
-                        .productId(item.productId())
-                        .quantity(item.quantity())
-                        .price(item.price())
-                        .totalPrice(OrderItem.calculateTotal(item.price(), item.quantity()))
-                        .build())
+                .map(item -> OrderItem.create(item.productId(), item.quantity(), item.price()))
                 .toList();
 
-        // 1. 재고 차감 (예약)
+        // 1. 재고 차감
         stockService.deductAll(items);
 
         // 2. 쿠폰 사용

@@ -24,4 +24,13 @@ public record OrderItem(
                 .map(OrderItem::totalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    public static OrderItem create(Long productId, Long quantity, BigDecimal price) {
+        return OrderItem.builder()
+                .productId(productId)
+                .quantity(quantity)
+                .price(price)
+                .totalPrice(calculateTotal(price, quantity))
+                .build();
+    }
 }
