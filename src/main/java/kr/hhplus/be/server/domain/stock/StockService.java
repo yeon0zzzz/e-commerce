@@ -14,7 +14,7 @@ public class StockService {
 
     private final StockRepository stockRepository;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Stock findByProductId(Long productId) {
         return stockRepository.findByProductId(productId);
     }
@@ -24,6 +24,7 @@ public class StockService {
         stock.validateStockEnough(requestedQuantity);
     }
 
+    @Transactional
     public void deduct(Long productId, Long requestedQuantity) {
         Stock stock = stockRepository.findByProductId(productId);
         Stock deducted = stock.deduct(requestedQuantity);
