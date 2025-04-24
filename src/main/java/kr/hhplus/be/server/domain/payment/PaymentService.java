@@ -14,14 +14,18 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
 
-    public void pay(Long orderId, BigDecimal expectedAmount) {
-        Payment payment = Payment.builder()
-                .orderId(orderId)
-                .paidAmount(expectedAmount)
-                .paidAt(LocalDateTime.now())
-                .build();
+    public Payment pay(Long orderId, BigDecimal amount) {
 
-        paymentRepository.save(payment);
+        Payment payment = Payment.complete(orderId, amount);
+
+        return paymentRepository.save(payment);
+    }
+
+    public Payment cancel(Payment payment) {
+
+        Payment cancelledPayment = payment.cancel();
+
+        return paymentRepository.save(cancelledPayment);
     }
 
     @Transactional(readOnly = true)

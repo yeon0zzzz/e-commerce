@@ -49,7 +49,7 @@ class PaymentServiceTest {
         Payment saved = captor.getValue();
 
         assertThat(saved.orderId()).isEqualTo(orderId);
-        assertThat(saved.paidAmount()).isEqualByComparingTo(amount);
+        assertThat(saved.amount()).isEqualByComparingTo(amount);
         assertThat(saved.paidAt()).isNotNull();
     }
 }

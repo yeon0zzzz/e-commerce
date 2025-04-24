@@ -23,8 +23,12 @@ public class PaymentEntity {
     @Column(name = "order_id")
     private Long orderId;
 
-    @Column(name = "paid_amount")
-    private BigDecimal paidAmount;
+    @Column(name = "amount")
+    private BigDecimal amount;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Payment.PaymentStatus status;
 
     @Column(name = "paid_at")
     private LocalDateTime paidAt;
@@ -33,7 +37,8 @@ public class PaymentEntity {
         return PaymentEntity.builder()
                 .paymentId(payment.paymentId())
                 .orderId(payment.orderId())
-                .paidAmount(payment.paidAmount())
+                .amount(payment.amount())
+                .status(payment.status())
                 .paidAt(payment.paidAt())
                 .build();
     }
@@ -42,7 +47,8 @@ public class PaymentEntity {
         return Payment.builder()
                 .paymentId(entity.getPaymentId())
                 .orderId(entity.getOrderId())
-                .paidAmount(entity.getPaidAmount())
+                .amount(entity.getAmount())
+                .status(entity.getStatus())
                 .paidAt(entity.getPaidAt())
                 .build();
     }

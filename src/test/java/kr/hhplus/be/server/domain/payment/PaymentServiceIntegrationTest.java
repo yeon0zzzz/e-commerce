@@ -31,7 +31,8 @@ public class PaymentServiceIntegrationTest {
         Payment payment = Payment.builder()
                 .paymentId(null)
                 .orderId(1L)
-                .paidAmount(BigDecimal.valueOf(1000L))
+                .amount(BigDecimal.valueOf(1000L))
+                .status(Payment.PaymentStatus.COMPLETED)
                 .paidAt(LocalDateTime.now())
                 .build();
         Payment savedPayment = paymentRepository.save(payment);
@@ -39,6 +40,6 @@ public class PaymentServiceIntegrationTest {
         Payment result = paymentService.findByOrderId(savedPayment.orderId());
 
         assertThat(result.paymentId()).isEqualTo(1L);
-        assertThat(result.paidAmount()).isEqualTo(BigDecimal.valueOf(1000L));
+        assertThat(result.amount()).isEqualTo(BigDecimal.valueOf(1000L));
     }
 }

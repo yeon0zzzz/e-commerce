@@ -12,41 +12,39 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("결제_도메인_유효성_검증_단위_테스트")
+@DisplayName("결제_도메인_단위_테스트")
 public class PaymentDomainTest {
 
+    private Payment basePayment(Payment.PaymentStatus status) {
+        return Payment.builder()
+                .paymentId(1L)
+                .orderId(1L)
+                .amount(BigDecimal.valueOf(100L))
+                .status(status)
+                .paidAt(LocalDateTime.now())
+                .build();
+    }
+
     @Test
-    @DisplayName("결제_성공_금액_일치")
-    void validateAmountSuccess() {
+    @DisplayName("결제 취소 성공")
+    void validateCancellableSuccess() {
         // given
-        BigDecimal amount = BigDecimal.valueOf(5000);
-        Payment payment = basePayment(amount);
+        Payment payment = basePayment(Payment.PaymentStatus.PENDING);
 
         // when & then
-        assertThatCode(() -> payment.validateAmount(amount))
+        assertThatCode(payment::validateCancellable)
                 .doesNotThrowAnyException();
     }
 
     @Test
-    @DisplayName("결제_실패_금액_불일치")
-    void validateAmountFail() {
+    @DisplayName("결제 취소 실패")
+    void validateCancellableFail() {
         // given
-        BigDecimal actual = BigDecimal.valueOf(5000);
-        BigDecimal expected = BigDecimal.valueOf(3000);
-        Payment payment = basePayment(actual);
+        Payment payment = basePayment(Payment.PaymentStatus.FAILED);
 
         // when & then
-        assertThatThrownBy(() -> payment.validateAmount(expected))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(PaymentMessage.MISMATCH_AMOUNT);
-    }
-
-    private Payment basePayment(BigDecimal amount) {
-        return Payment.builder()
-                .paymentId(1L)
-                .orderId(123L)
-                .paidAmount(amount)
-                .paidAt(LocalDateTime.now())
-                .build();
+        assertThatCode(payment::validateCancellable)
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage(PaymentMessage.CANCEL_FAILED);
     }
 }
