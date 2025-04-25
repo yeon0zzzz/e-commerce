@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.domain.point;
 
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public class PointService {
 
     private final PointRepository pointRepository;
 
+    @Transactional
     public Point charge(Long userId, Long amount) {
 
         Point point = pointRepository.findByUserId(userId);
@@ -24,6 +26,7 @@ public class PointService {
         return updateUserPoint;
     }
 
+    @Transactional
     public Point use(Long userId, Long amount) {
 
         Point point = pointRepository.findByUserId(userId);
@@ -35,7 +38,12 @@ public class PointService {
         return updateUserPoint;
     }
 
-    public Point getUserPoint(Long userId) {
+    @Transactional
+    public Point findByUserId(Long userId) {
         return pointRepository.findByUserId(userId);
+    }
+
+    public Point save(Point point) {
+        return pointRepository.save(point);
     }
 }

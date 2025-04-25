@@ -93,7 +93,7 @@ class PointServiceTest {
         given(pointRepository.findByUserId(userId)).willReturn(point);
 
         // when
-        Point userPoint = pointService.getUserPoint(userId);
+        Point userPoint = pointService.findByUserId(userId);
 
         //then
         assertThat(userPoint).isNotNull();
