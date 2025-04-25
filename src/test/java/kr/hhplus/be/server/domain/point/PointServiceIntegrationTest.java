@@ -4,6 +4,7 @@ import kr.hhplus.be.server.domain.user.User;
 import kr.hhplus.be.server.infra.point.PointRepositoryImpl;
 import kr.hhplus.be.server.infra.point.jpa.PointEntity;
 import kr.hhplus.be.server.infra.point.jpa.PointJpaRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
+@DisplayName("포인트 서비스 통합 테스트")
 public class PointServiceIntegrationTest {
 
     @Autowired
@@ -25,12 +27,19 @@ public class PointServiceIntegrationTest {
     @Autowired
     private PointRepository pointRepository;
 
+    @Autowired
+    private PointJpaRepository pointJpaRepository;
+
+    @BeforeEach
+    void setup() {
+        pointJpaRepository.deleteAll();
+    }
+
 
     @Test
     @DisplayName("포인트_충전_후_잔액_확인")
     void chargePointSuccess() {
         // given
-//        Long pointId = 1L;
         Long userId = 1L;
         Long amount = 500L;
         Point point = Point.builder()
@@ -42,10 +51,9 @@ public class PointServiceIntegrationTest {
         pointRepository.save(point);
 
         // when
-        pointService.charge(userId, amount);
+        Point savedPoint = pointService.charge(userId, amount);
 
         // then
-        Point result = pointRepository.findByUserId(userId);
-        assertThat(result.point()).isEqualTo(500L);
+        assertThat(savedPoint.point()).isEqualTo(500L);
     }
 }

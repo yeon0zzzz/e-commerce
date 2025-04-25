@@ -21,9 +21,7 @@ public class PointService {
 
         Point updateUserPoint = point.charge(amount);
 
-        pointRepository.save(updateUserPoint);
-
-        return updateUserPoint;
+        return pointRepository.save(updateUserPoint);
     }
 
     @Transactional
@@ -33,9 +31,7 @@ public class PointService {
 
         Point updateUserPoint = point.use(amount);
 
-        pointRepository.save(updateUserPoint);
-
-        return updateUserPoint;
+        return pointRepository.save(updateUserPoint);
     }
 
     @Transactional

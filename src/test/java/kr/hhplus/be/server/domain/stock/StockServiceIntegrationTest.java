@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.domain.stock;
 
+import kr.hhplus.be.server.infra.stock.jpa.StockJpaRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,14 @@ public class StockServiceIntegrationTest {
 
     @Autowired
     private StockRepository stockRepository;
+
+    @Autowired
+    private StockJpaRepository stockJpaRepository;
+
+    @BeforeEach
+    void setup() {
+        stockJpaRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("재고_조회")

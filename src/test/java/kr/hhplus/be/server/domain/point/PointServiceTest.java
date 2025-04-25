@@ -39,6 +39,8 @@ class PointServiceTest {
                 .build();
 
         given(pointRepository.findByUserId(userId)).willReturn(point);
+        given(pointRepository.save(any(Point.class)))
+                .willAnswer(invocation -> invocation.getArgument(0));
 
         // when
         Point updatePoint = pointService.charge(userId, amount);
@@ -65,6 +67,8 @@ class PointServiceTest {
                 .build();
 
         given(pointRepository.findByUserId(userId)).willReturn(point);
+        given(pointRepository.save(any(Point.class)))
+                .willAnswer(invocation -> invocation.getArgument(0));
 
         // when
         Point updatePoint = pointService.use(userId, amount);

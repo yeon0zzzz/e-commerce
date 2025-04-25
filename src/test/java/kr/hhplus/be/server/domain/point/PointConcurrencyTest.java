@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@DisplayName("포인트 동시성 테스트")
 public class PointConcurrencyTest {
 
     @Autowired
