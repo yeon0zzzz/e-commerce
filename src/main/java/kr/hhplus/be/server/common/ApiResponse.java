@@ -2,6 +2,7 @@ package kr.hhplus.be.server.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.Map;
@@ -9,24 +10,24 @@ import java.util.Map;
 
 @Getter
 @AllArgsConstructor
-public class ApiResponse {
-    private int code;
-    private String message;
-    private Object data;
-    
+public class ApiResponse<T> {
 
-    public static ApiResponse success(Map<String, Object> data) {
-        return new ApiResponse(200, "SUCCESS", data);
+    private final int code;
+    private final String message;
+    private final T data;
+
+    public static <T> ApiResponse<T> success(T data) {
+        return new ApiResponse<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                data);
     }
 
-    public static ApiResponse success(List<Map<String, Object>> data) {
-        return new ApiResponse(200, "SUCCESS", data);
+    public static <T> ApiResponse<T> success() {
+        return success(null);
     }
 
-    public static ApiResponse success(Object data) {return new ApiResponse(200, "SUCCESS", data);}
-
-    public static ApiResponse error(int code, String message) {
-        return new ApiResponse(code, message, null);
+    public static <T> ApiResponse<T> fail(int code, String message) {
+        return new ApiResponse<>(code, message, null);
     }
-
 }
