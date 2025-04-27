@@ -23,8 +23,11 @@ public class PointRepositoryImpl implements PointRepository {
     }
 
     @Override
-    public void save(Point point){
-        PointEntity entity = PointEntity.toEntity(point);
-        pointJpaRepository.save(entity);
+    public Point save(Point point){
+        return PointEntity.toDomain(
+                pointJpaRepository.save(
+                        PointEntity.toEntity(point)
+                )
+        );
     }
 }

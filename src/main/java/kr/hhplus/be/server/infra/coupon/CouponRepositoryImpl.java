@@ -16,7 +16,7 @@ public class CouponRepositoryImpl implements CouponRepository {
 
     @Override
     public Coupon findById(Long couponId) {
-        return couponJpaRepository.findById(couponId)
+        return couponJpaRepository.findByCouponId(couponId)
                 .map(CouponEntity::toDomain)
                 .orElseThrow(() -> new IllegalArgumentException("쿠폰이 없습니다."));
     }
