@@ -15,7 +15,9 @@ public class StockRepositoryImpl implements StockRepository {
 
     @Override
     public Stock findByProductId(Long productId) {
-        return StockEntity.toDomain(stockJpaRepository.findByProductId(productId));
+        return stockJpaRepository.findByProductId(productId)
+                .map(StockEntity::toDomain)
+                .orElseThrow(() -> new IllegalArgumentException("재고가 없습니다."));
     }
 
     @Override

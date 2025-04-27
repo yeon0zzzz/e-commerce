@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.domain.coupon;
 
+import kr.hhplus.be.server.support.DatabaseCleaner;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,14 @@ public class CouponConcurrencyTest {
 
     @Autowired
     private CouponRepository couponRepository;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
+    @BeforeEach
+    void setUp() {
+        databaseCleaner.truncateAllTables();
+    }
 
     @Test
     @DisplayName("선착순 쿠폰 발급을 동시에 요청시 모든 요청에 대해 발급 되어야 한다.")

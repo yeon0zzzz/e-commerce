@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.domain.stock;
 
-import kr.hhplus.be.server.infra.stock.jpa.StockJpaRepository;
+import kr.hhplus.be.server.support.DatabaseCleaner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
@@ -24,11 +23,11 @@ public class StockServiceIntegrationTest {
     private StockRepository stockRepository;
 
     @Autowired
-    private StockJpaRepository stockJpaRepository;
+    private DatabaseCleaner databaseCleaner;
 
     @BeforeEach
-    void setup() {
-        stockJpaRepository.deleteAll();
+    void setUp() {
+        databaseCleaner.truncateAllTables();
     }
 
     @Test
@@ -43,6 +42,7 @@ public class StockServiceIntegrationTest {
         Stock savedstock = stockService.save(stock);
 
         Stock result = stockService.findByProductId(savedstock.productId());
+//        assertThat(result.stockId()).isNotNull();
         assertThat(result.stockId()).isEqualTo(1L);
         assertThat(result.quantity()).isEqualTo(1);
     }

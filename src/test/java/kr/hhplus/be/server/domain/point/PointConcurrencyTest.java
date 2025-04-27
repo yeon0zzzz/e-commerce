@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.domain.point;
 
+import kr.hhplus.be.server.support.DatabaseCleaner;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,14 @@ public class PointConcurrencyTest {
 
     @Autowired
     private PointRepository pointRepository;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
+    @BeforeEach
+    void setUp() {
+        databaseCleaner.truncateAllTables();
+    }
 
     @Test
     @DisplayName("포인트 충전과 사용이 동시에 요청시 순차적으로 성공해야 한다.")

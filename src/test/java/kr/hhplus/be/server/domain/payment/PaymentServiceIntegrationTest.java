@@ -1,8 +1,7 @@
 package kr.hhplus.be.server.domain.payment;
 
-import kr.hhplus.be.server.domain.coupon.usercoupon.UserCouponRepository;
-import kr.hhplus.be.server.domain.coupon.usercoupon.UserCouponService;
-import kr.hhplus.be.server.domain.product.ProductService;
+import kr.hhplus.be.server.support.DatabaseCleaner;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
@@ -24,6 +22,14 @@ public class PaymentServiceIntegrationTest {
 
     @Autowired
     private PaymentRepository paymentRepository;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
+    @BeforeEach
+    void setUp() {
+        databaseCleaner.truncateAllTables();
+    }
 
     @Test
     @DisplayName("결제_조회")
