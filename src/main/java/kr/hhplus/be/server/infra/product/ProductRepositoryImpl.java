@@ -38,9 +38,4 @@ public class ProductRepositoryImpl implements ProductRepository {
                 .map(ProductEntity::toDomain)
                 .toList();
     }
-
-    @Override
-    public List<Product> findTop5PopularProducts() {
-        return List.of();
-    }
 }

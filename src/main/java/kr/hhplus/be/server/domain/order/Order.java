@@ -5,6 +5,7 @@ import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 public record Order(
@@ -14,6 +15,7 @@ public record Order(
         BigDecimal discountAmount,
         BigDecimal finalAmount,
         OrderStatus status,
+        List<OrderItem> items,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
@@ -34,13 +36,14 @@ public record Order(
         return totalAmount.subtract(discountAmount).max(BigDecimal.ZERO);
     }
 
-    public static Order create(Long userId, BigDecimal totalAmount, BigDecimal discountAmount) {
+    public static Order create(Long userId, BigDecimal totalAmount, BigDecimal discountAmount, List<OrderItem> items) {
         return Order.builder()
                 .userId(userId)
                 .totalAmount(totalAmount)
                 .discountAmount(discountAmount)
                 .finalAmount(totalAmount.subtract(discountAmount).max(BigDecimal.ZERO))
-                .status(Order.OrderStatus.CREATED)
+                .status(OrderStatus.CREATED)
+                .items(items)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();

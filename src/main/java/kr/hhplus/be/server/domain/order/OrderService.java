@@ -21,14 +21,14 @@ public class OrderService {
         BigDecimal totalAmount = OrderItem.sumTotalPrice(items);
 
         // 주문 객체 생성
-        Order order = Order.create(userId, totalAmount, discountAmount);
+        Order order = Order.create(userId, totalAmount, discountAmount, items);
 
         // 저장
         Order savedOrder = orderRepository.save(order);
 
         // 항목 저장
         List<OrderItem> orderItems = items.stream()
-                .map(item -> OrderItem.create(item.productId(), item.quantity(), item.price()))
+                .map(item -> OrderItem.create(savedOrder.orderId(), item.productId(), item.quantity(), item.price()))
                 .toList();
         orderItemRepository.saveAll(orderItems);
 

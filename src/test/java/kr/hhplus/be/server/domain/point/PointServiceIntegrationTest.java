@@ -1,9 +1,7 @@
 package kr.hhplus.be.server.domain.point;
 
-import kr.hhplus.be.server.domain.user.User;
-import kr.hhplus.be.server.infra.point.PointRepositoryImpl;
-import kr.hhplus.be.server.infra.point.jpa.PointEntity;
 import kr.hhplus.be.server.infra.point.jpa.PointJpaRepository;
+import kr.hhplus.be.server.support.DatabaseCleaner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,9 +28,12 @@ public class PointServiceIntegrationTest {
     @Autowired
     private PointJpaRepository pointJpaRepository;
 
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
     @BeforeEach
-    void setup() {
-        pointJpaRepository.deleteAll();
+    void setUp() {
+        databaseCleaner.truncateAllTables();
     }
 
 
@@ -54,6 +55,7 @@ public class PointServiceIntegrationTest {
         Point savedPoint = pointService.charge(userId, amount);
 
         // then
+        assertThat(savedPoint.pointId()).isEqualTo(1L);
         assertThat(savedPoint.point()).isEqualTo(500L);
     }
 }

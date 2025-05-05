@@ -1,36 +1,31 @@
 package kr.hhplus.be.server.interfaces.point;
 
 import kr.hhplus.be.server.common.ApiResponse;
+import kr.hhplus.be.server.domain.point.Point;
+import kr.hhplus.be.server.domain.point.PointService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("")
 public class PointController {
 
-    @GetMapping("/users/{userId}/point")
-    public ApiResponse getPoint(@PathVariable Long userId) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("userId", userId);
-        response.put("point", 10000);
-        response.put("updatedAt", LocalDateTime.now());
+    private final PointService pointService;
 
-        return ApiResponse.success(response);
+    @GetMapping("/users/{userId}/point")
+    public ApiResponse<PointDto.Response> getPoint(@PathVariable Long userId) {
+
+        Point point = pointService.findByUserId(userId);
+
+        return ApiResponse.success(PointDto.Response.of(point));
     }
 
-    @PostMapping("/users/{userId}/point")
-    public ApiResponse charge(@PathVariable Long userId, @RequestBody Map<String, Object> request) {
-        Long amount = Long.valueOf(request.get("amount").toString());
+    @PatchMapping("/users/{userId}/point")
+    public ApiResponse<PointDto.Response> charge(@PathVariable Long userId, PointDto.Request request) {
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("userId", userId);
-        response.put("point", amount);
-        response.put("updatedAt", LocalDateTime.now());
+        Point point = pointService.charge(userId, request.amount());
 
-        return ApiResponse.success(response);
+        return ApiResponse.success(PointDto.Response.of(point));
     }
 }

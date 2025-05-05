@@ -35,4 +35,9 @@ public class UserCouponService {
     public UserCoupon save(UserCoupon userCoupon) {
         return userCouponRepository.save(userCoupon);
     }
+
+    public UserCoupon create(Long userId, Long couponId) {
+
+        return UserCoupon.create(userId, couponId);
+    }
 }

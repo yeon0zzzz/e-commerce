@@ -27,6 +27,7 @@ public class ProductEntity {
     private BigDecimal price;
 
     @Column(name = "product_status")
+    @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
 
     public static ProductEntity toEntity(Product product) {

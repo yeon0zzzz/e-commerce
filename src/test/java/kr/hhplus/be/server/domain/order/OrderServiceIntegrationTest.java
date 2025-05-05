@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.domain.order;
 
+import kr.hhplus.be.server.support.DatabaseCleaner;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
@@ -21,6 +22,14 @@ public class OrderServiceIntegrationTest {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
+    @BeforeEach
+    void setUp() {
+        databaseCleaner.truncateAllTables();
+    }
 
     @Test
     @DisplayName("주문_조회")

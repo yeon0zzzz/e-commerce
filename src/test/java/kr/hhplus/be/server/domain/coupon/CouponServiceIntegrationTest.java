@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.domain.coupon;
 
+import kr.hhplus.be.server.support.DatabaseCleaner;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,14 @@ class CouponServiceIntegrationTest {
 
     @Autowired
     private CouponRepository couponRepository;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
+    @BeforeEach
+    void setUp() {
+        databaseCleaner.truncateAllTables();
+    }
 
     @Test
     @DisplayName("쿠폰_조회")

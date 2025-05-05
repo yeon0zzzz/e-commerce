@@ -1,38 +1,34 @@
 package kr.hhplus.be.server.interfaces.coupon;
 
+import kr.hhplus.be.server.application.coupon.UserCouponFacade;
 import kr.hhplus.be.server.common.ApiResponse;
+import kr.hhplus.be.server.domain.coupon.Coupon;
+import kr.hhplus.be.server.domain.coupon.CouponService;
+import kr.hhplus.be.server.domain.coupon.usercoupon.UserCoupon;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("")
 public class CouponController {
 
-    @GetMapping("/users/{userId}/coupons")
-    public ApiResponse getCoupons(@RequestParam Long userId, @RequestParam String couponStatus) {
-        Map<String, Object> coupon = new HashMap<>();
-        coupon.put("userCouponId", 1);
-        coupon.put("couponId", 10);
-        coupon.put("used", false);
-        coupon.put("issuedAt", LocalDateTime.now());
+    private final CouponService couponService;
+    private final UserCouponFacade userCouponFacade;
 
-        return ApiResponse.success(List.of(coupon));
+    @GetMapping("/coupons/{couponId}")
+    public ApiResponse<CouponDto.Response> getCoupon(@PathVariable Long couponId) {
+
+        Coupon coupon = couponService.findById(couponId);
+
+        return ApiResponse.success(CouponDto.Response.of(coupon));
     }
 
-    @PostMapping("/users/{userId}/coupons")
-    public ApiResponse issueCoupon(@RequestBody Map<String, Object> request) {
-        Long userId = Long.valueOf(request.get("userId").toString());
-        Long couponId = Long.valueOf(request.get("couponId").toString());
+    @PostMapping("/coupons/{couponId}/issue")
+    public ApiResponse<UserCouponDto.Response> issueCoupon(@PathVariable Long couponId, UserCouponDto.Request request) {
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("userId", userId);
-        data.put("couponId", couponId);
-        data.put("issuedAt", LocalDateTime.now());
+        UserCoupon userCoupon = userCouponFacade.issue(request.userId(), couponId);
 
-        return ApiResponse.success(data);
+        return ApiResponse.success(UserCouponDto.Response.of(userCoupon));
     }
 }

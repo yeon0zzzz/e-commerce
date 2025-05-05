@@ -33,4 +33,14 @@ public record OrderItem(
                 .totalPrice(calculateTotal(price, quantity))
                 .build();
     }
+
+    public static OrderItem create(Long orderId, Long productId, Long quantity, BigDecimal price) {
+        return OrderItem.builder()
+                .orderId(orderId)
+                .productId(productId)
+                .quantity(quantity)
+                .price(price)
+                .totalPrice(calculateTotal(price, quantity))
+                .build();
+    }
 }

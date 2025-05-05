@@ -1,5 +1,10 @@
-package kr.hhplus.be.server.domain.stock;
+package kr.hhplus.be.server.concurrency;
 
+import kr.hhplus.be.server.domain.stock.Stock;
+import kr.hhplus.be.server.domain.stock.StockRepository;
+import kr.hhplus.be.server.domain.stock.StockService;
+import kr.hhplus.be.server.support.DatabaseCleaner;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +25,14 @@ public class StockConcurrencyTest {
 
     @Autowired
     private StockRepository stockRepository;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
+    @BeforeEach
+    void setUp() {
+        databaseCleaner.truncateAllTables();
+    }
 
     @Test
     @DisplayName("재고 차감을 요청시 모든 요청에 대한 재고 차감이 이루어져야 한다.")
