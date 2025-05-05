@@ -1,5 +1,9 @@
-package kr.hhplus.be.server.domain.coupon;
+package kr.hhplus.be.server.concurrency;
 
+import kr.hhplus.be.server.domain.coupon.Coupon;
+import kr.hhplus.be.server.domain.coupon.CouponRepository;
+import kr.hhplus.be.server.domain.coupon.CouponService;
+import kr.hhplus.be.server.domain.coupon.CouponStatus;
 import kr.hhplus.be.server.support.DatabaseCleaner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,5 +1,8 @@
-package kr.hhplus.be.server.domain.point;
+package kr.hhplus.be.server.concurrency;
 
+import kr.hhplus.be.server.domain.point.Point;
+import kr.hhplus.be.server.domain.point.PointRepository;
+import kr.hhplus.be.server.domain.point.PointService;
 import kr.hhplus.be.server.support.DatabaseCleaner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
