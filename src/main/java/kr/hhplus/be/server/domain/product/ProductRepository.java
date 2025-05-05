@@ -8,6 +8,4 @@ public interface ProductRepository {
     Product save(Product product);
 
     List<Product> findAll();
-
-    List<Product> findTop5PopularProducts();  // 최근 3일 기준
 }

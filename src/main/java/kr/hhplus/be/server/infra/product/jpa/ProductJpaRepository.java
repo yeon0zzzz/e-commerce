@@ -10,5 +10,4 @@ public interface ProductJpaRepository extends JpaRepository<ProductEntity, Long>
 
     List<ProductEntity> findAll();
 
-//    List<ProductEntity> findTop5PopularProducts();
 }

@@ -2,7 +2,6 @@ package kr.hhplus.be.server.domain.product;
 
 import java.util.List;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +21,6 @@ public class ProductService {
 
     public List<Product> getAll() {
         return productRepository.findAll();
-    }
-
-    public List<Product> findPopular() {
-        return productRepository.findTop5PopularProducts();
     }
 
     public Product save(Product product) {
