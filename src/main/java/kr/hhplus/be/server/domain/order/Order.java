@@ -32,8 +32,12 @@ public record Order(
         }
     }
 
+    public static BigDecimal defaultDiscountAmount(BigDecimal discountAmount) {
+        return discountAmount != null ? discountAmount : BigDecimal.ZERO;
+    }
+
     public BigDecimal calculateFinalAmount() {
-        return totalAmount.subtract(discountAmount).max(BigDecimal.ZERO);
+        return totalAmount.subtract(defaultDiscountAmount(discountAmount)).max(BigDecimal.ZERO);
     }
 
     public static Order create(Long userId, BigDecimal totalAmount, BigDecimal discountAmount, List<OrderItem> items) {
@@ -41,7 +45,7 @@ public record Order(
                 .userId(userId)
                 .totalAmount(totalAmount)
                 .discountAmount(discountAmount)
-                .finalAmount(totalAmount.subtract(discountAmount).max(BigDecimal.ZERO))
+                .finalAmount(totalAmount.subtract(defaultDiscountAmount(discountAmount)).max(BigDecimal.ZERO))
                 .status(OrderStatus.CREATED)
                 .items(items)
                 .createdAt(LocalDateTime.now())
