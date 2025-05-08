@@ -26,4 +26,12 @@ public record Product(
     public boolean isActive() {
         return ProductStatus.ACTIVE.equals(this.productStatus);
     }
+
+    public static Product create(String name, BigDecimal price) {
+        return Product.builder()
+                .name(name)
+                .price(price)
+                .productStatus(ProductStatus.ACTIVE)
+                .build();
+    }
 }
