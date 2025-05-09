@@ -34,6 +34,7 @@ public class CouponEntity {
     private long issuedCount;
 
     @Column(name = "coupon_status")
+    @Enumerated(EnumType.STRING)
     private CouponStatus couponStatus;
 
     @Column(name = "activated_at")

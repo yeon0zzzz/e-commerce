@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.domain.stock;
 
 import kr.hhplus.be.server.domain.order.OrderItem;
+import kr.hhplus.be.server.support.aop.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ public class StockService {
         stock.validateStockEnough(requestedQuantity);
     }
 
+    @DistributedLock(key = "#productId")
     @Transactional
     public void deduct(Long productId, Long requestedQuantity) {
         Stock stock = stockRepository.findByProductId(productId);

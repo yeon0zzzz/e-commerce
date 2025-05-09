@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.domain.coupon;
 
+import kr.hhplus.be.server.support.aop.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
+    @DistributedLock(key = "#couponId")
     @Transactional
     public Coupon issue(Long couponId) {
 

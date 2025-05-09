@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest
+@DisplayName("쿠폰 동시성 테스트")
 public class CouponConcurrencyTest {
 
     @Autowired
@@ -38,7 +39,7 @@ public class CouponConcurrencyTest {
     }
 
     @Test
-    @DisplayName("선착순 쿠폰 발급을 동시에 요청시 모든 요청에 대해 발급 되어야 한다.")
+    @DisplayName("분산락 - 선착순 쿠폰 발급을 동시에 요청시 모든 요청에 대해 발급 되어야 한다.")
     void issueCouponConcurrencyFailTest() throws InterruptedException {
 
         int threadCount = 100;
