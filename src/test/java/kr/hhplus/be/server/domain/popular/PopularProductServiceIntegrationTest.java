@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.domain.popular;
 
+import kr.hhplus.be.server.interfaces.RedisRepository;
 import kr.hhplus.be.server.support.DatabaseCleaner;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,14 @@ public class PopularProductServiceIntegrationTest {
 
     @Autowired
     private DatabaseCleaner databaseCleaner;
+
+    @Autowired
+    RedisRepository redisRepository;
+
+    @BeforeEach
+    void setUp() {
+        redisRepository.remove("popularProducts::popularProducts");
+    }
 
     @Test
     @DisplayName("최근 3일간 가장 많이 팔린 인기 상품 조회")
