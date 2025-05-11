@@ -25,7 +25,7 @@ public class CouponController {
     }
 
     @PostMapping("/coupons/{couponId}/issue")
-    public ApiResponse<UserCouponDto.Response> issueCoupon(@PathVariable Long couponId, UserCouponDto.Request request) {
+    public ApiResponse<UserCouponDto.Response> issueCoupon(@PathVariable Long couponId, @RequestBody UserCouponDto.Request request) {
 
         UserCoupon userCoupon = userCouponFacade.issue(request.userId(), couponId);
 

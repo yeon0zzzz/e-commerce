@@ -35,7 +35,7 @@ public class StockConcurrencyTest {
     }
 
     @Test
-    @DisplayName("재고 차감을 요청시 모든 요청에 대한 재고 차감이 이루어져야 한다.")
+    @DisplayName("분산락 - 재고 차감을 요청시 모든 요청에 대한 재고 차감이 이루어져야 한다.")
     void deductStockConcurrencyFailTest() throws InterruptedException {
         int threadCount = 100;
 

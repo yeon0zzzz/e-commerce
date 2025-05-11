@@ -15,7 +15,8 @@ public class OrderPaymentDto {
     public record Request(
             Long userId,
             List<ProductRequest> items,
-            Long userCouponId
+            Long userCouponId,
+            BigDecimal discountAmount
     ) {
         public OrderPaymentCommand toCommand() {
             return OrderPaymentCommand.builder()
@@ -24,9 +25,11 @@ public class OrderPaymentDto {
                             .map(item -> OrderProductCommand.builder()
                                     .productId(item.productId())
                                     .quantity(item.quantity())
+                                    .price(item.price())
                                     .build())
                             .toList())
                     .userCouponId(userCouponId)
+                    .discountAmount(discountAmount)
                     .build();
         }
     }
@@ -48,6 +51,7 @@ public class OrderPaymentDto {
 
     public record ProductRequest(
             Long productId,
-            Long quantity
+            Long quantity,
+            BigDecimal price
     ) {}
 }

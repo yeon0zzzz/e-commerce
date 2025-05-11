@@ -22,7 +22,7 @@ public class PointController {
     }
 
     @PatchMapping("/users/{userId}/point")
-    public ApiResponse<PointDto.Response> charge(@PathVariable Long userId, PointDto.Request request) {
+    public ApiResponse<PointDto.Response> charge(@PathVariable Long userId, @RequestBody PointDto.Request request) {
 
         Point point = pointService.charge(userId, request.amount());
 
