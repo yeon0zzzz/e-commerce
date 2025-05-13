@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.interfaces;
+package kr.hhplus.be.server.infra;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
