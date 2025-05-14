@@ -25,10 +25,11 @@ public class ProductSalesDailyScheduler {
     public void syncDailySales() {
 
         try {
-            String key = "product:sales:" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            String key = "product:sales:" + LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             List<ProductSalesDaily> products = productSalesService.findAll(key);
 
             productSalesService.saveAll(products);
+            log.info("일별 판매량 집계 완료 [key: {} - 총 {}건]", key, products.size());
         } catch (Exception e) {
             log.error("상품 판매 일별 집계 스케줄러 실행 오류", e);
         }
