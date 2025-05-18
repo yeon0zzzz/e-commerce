@@ -9,6 +9,7 @@ import kr.hhplus.be.server.domain.order.OrderService;
 import kr.hhplus.be.server.domain.payment.PaymentService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ public class OrderFacade {
     private final UserCouponService userCouponService;
     private final OrderService orderService;
     private final PaymentService paymentService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public Order orderPayment(OrderPaymentCommand command) {
@@ -44,6 +46,9 @@ public class OrderFacade {
 
         // 4. 결제 처리
         paymentService.pay(order.orderId(), order.finalAmount());
+
+        // 5. 일별 판매량 Redis Cache 저장
+        eventPublisher.publishEvent(new OrderCompletedEvent(items));
 
         return order;
     }

@@ -1,8 +1,9 @@
 package kr.hhplus.be.server.cache;
 
 import jakarta.transaction.Transactional;
-import kr.hhplus.be.server.interfaces.RedisRepository;
-import org.junit.jupiter.api.BeforeEach;
+import kr.hhplus.be.server.infra.RedisRepository;
+import kr.hhplus.be.server.support.DatabaseCleaner;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,15 @@ public class PopularProductCacheTest {
     @Autowired
     RedisRepository redisRepository;
 
+    @Autowired
+    DatabaseCleaner databaseCleaner;
+
     private final String redisCacheKey = "popularProducts::popularProducts";  // 기본 key 규칙
 
-    @BeforeEach
+    @AfterEach
     void setUp() {
         redisRepository.remove(redisCacheKey);
+        databaseCleaner.truncateAllTables();
     }
 
     @Test

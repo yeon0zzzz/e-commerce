@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.domain.popular;
 
-import kr.hhplus.be.server.interfaces.RedisRepository;
+import kr.hhplus.be.server.infra.RedisRepository;
 import kr.hhplus.be.server.support.DatabaseCleaner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
