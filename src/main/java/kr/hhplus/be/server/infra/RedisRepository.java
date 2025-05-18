@@ -30,8 +30,8 @@ public class RedisRepository {
         return redisTemplate.hasKey(key);
     }
 
-    public void addSortedSet(String key, String value, Long score) {
-        redisTemplate.opsForZSet().add(key, value, score);
+    public Boolean addSortedSet(String key, String value, Long score) {
+        return redisTemplate.opsForZSet().add(key, value, score);
     }
 
     public void incrementSortedSet(String key, String value, Long score) {
@@ -48,5 +48,21 @@ public class RedisRepository {
 
     public Set<ZSetOperations.TypedTuple<Object>> getSortedSetRangeWithScore(String key, Long start, Long end) {
         return redisTemplate.opsForZSet().rangeWithScores(key, start, end);
+    }
+
+    public Set<Object> getSortedSetRange(String key, Long start, Long end) {
+        return redisTemplate.opsForZSet().range(key, start, end);
+    }
+
+    public Long getSortedSetCount(String key) {
+        return redisTemplate.opsForZSet().zCard(key);
+    }
+
+    public Object getHashValue(String key, String hashKey) {
+        return redisTemplate.opsForHash().get(key, hashKey);
+    }
+
+    public void addHash(String key, String hashKey, String hashValue) {
+        redisTemplate.opsForHash().put(key, hashKey, hashValue);
     }
 }
