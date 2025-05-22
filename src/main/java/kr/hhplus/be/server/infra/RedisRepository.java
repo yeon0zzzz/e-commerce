@@ -2,10 +2,13 @@ package kr.hhplus.be.server.infra;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -13,6 +16,7 @@ import java.util.Set;
 public class RedisRepository {
 
     private final RedisTemplate<String, Object> redisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
 
     public Object get(String key) {
         return redisTemplate.opsForValue().get(key);
@@ -46,6 +50,10 @@ public class RedisRepository {
         return redisTemplate.opsForZSet().score(key, value);
     }
 
+    public Double getSortedSetScore(String key, Long value) {
+        return redisTemplate.opsForZSet().score(key, value);
+    }
+
     public Set<ZSetOperations.TypedTuple<Object>> getSortedSetRangeWithScore(String key, Long start, Long end) {
         return redisTemplate.opsForZSet().rangeWithScores(key, start, end);
     }
@@ -64,5 +72,9 @@ public class RedisRepository {
 
     public void addHash(String key, String hashKey, String hashValue) {
         redisTemplate.opsForHash().put(key, hashKey, hashValue);
+    }
+
+    public Long executeScript(DefaultRedisScript<Long> redisScript, List<String> keys, Object... args) {
+        return redisTemplate.execute(redisScript, keys, args);
     }
 }

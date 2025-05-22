@@ -6,7 +6,9 @@ import kr.hhplus.be.server.infra.RedisRepository;
 import kr.hhplus.be.server.infra.product.stats.jpa.ProductSalesDailyEntity;
 import kr.hhplus.be.server.infra.product.stats.jpa.ProductSalesDailyJpaRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
@@ -23,9 +25,17 @@ public class ProductSalesRepositoryImpl implements ProductSalesRepository {
     private final RedisRepository redisRepository;
     private final ProductSalesDailyJpaRepository productSalesDailyJpaRepository;
 
-    public void increaseDailySales(String key, String value, Long score) {
-        redisRepository.incrementSortedSet(key, value, score);
-        redisRepository.expire(key, Duration.ofDays(2));
+    @Qualifier("incrementWithExpireScript")
+    private final DefaultRedisScript<Long> incrementWithExpireScript;
+
+    public Long increaseDailySales(String key, String value, Long score) {
+        return redisRepository.executeScript(
+                incrementWithExpireScript,
+                List.of(key),                                       // KEYS[1]
+                score,                                              // ARGV[1]
+                value,                                              // ARGV[2]
+                Duration.ofDays(2).getSeconds()                     // ARGV[3]
+        );
     }
 
     public List<ProductSalesDaily> findAll(String key) {

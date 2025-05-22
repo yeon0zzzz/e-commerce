@@ -11,6 +11,6 @@ public class UserCouponCacheFacade {
     private final UserCouponCacheService userCouponCacheService;
 
     public void publish(Long userId, Long couponId) {
-        boolean issued = userCouponCacheService.publish(userId, couponId);
+        boolean issued = userCouponCacheService.atomicPublish(userId, couponId);
     }
 }

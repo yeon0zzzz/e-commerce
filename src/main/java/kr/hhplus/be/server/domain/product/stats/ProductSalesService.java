@@ -3,6 +3,7 @@ package kr.hhplus.be.server.domain.product.stats;
 import kr.hhplus.be.server.domain.order.OrderItem;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,9 +19,12 @@ public class ProductSalesService {
     public void increaseDailySales(List<OrderItem> items) {
         String key = "product:sales:" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-        items.forEach(item ->
-                productSalesRepository.increaseDailySales(key, item.productId().toString(), item.quantity())
-        );
+        items.forEach(item -> {
+            Long result = productSalesRepository.increaseDailySales(key, item.productId().toString(), item.quantity());
+            if (result == null || result == 0) {
+                throw new IllegalStateException("Redis 집계 실패: key=" + key + ", productId=" + item.productId());
+            }
+        });
     }
 
     public List<ProductSalesDaily> findAll(String key) {

@@ -2,8 +2,12 @@ package kr.hhplus.be.server.infra.coupon.usercoupon;
 
 import kr.hhplus.be.server.infra.RedisRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Repository;
 
+import java.time.Duration;
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -12,9 +16,21 @@ public class UserCouponRedisRepositoryImpl {
 
     private final RedisRepository redisRepository;
 
-    public Integer getCouponLimit(String key, String hashKey) {
-        String limitStr = (String) redisRepository.getHashValue(key, "limit");
-        return limitStr != null ? Integer.parseInt(limitStr) : null;
+    @Qualifier("couponIssueScript")
+    private final DefaultRedisScript<Long> couponIssueScript;
+
+    public Long issueCouponAtomic(String issueKey, String metaKey, String userId, Long score, int limit) {
+        return redisRepository.executeScript(
+                couponIssueScript,
+                List.of(issueKey, metaKey),
+                userId,
+                score,
+                limit
+        );
+    }
+
+    public String getCouponHash(String key, String hashKey) {
+        return (String) redisRepository.getHashValue(key, hashKey);
     }
 
     public Long getSortedSetCount(String key) {
@@ -32,5 +48,4 @@ public class UserCouponRedisRepositoryImpl {
     public Set<Object> getIssuedList(String key) {
         return redisRepository.getSortedSetRange(key, 0L, -1L);
     }
-
 }
