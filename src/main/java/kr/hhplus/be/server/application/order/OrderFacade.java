@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.application.order;
 
 
+import kr.hhplus.be.server.application.event.OrderEvent;
+import kr.hhplus.be.server.application.event.ProductSalesDailyEvent;
 import kr.hhplus.be.server.domain.coupon.usercoupon.UserCouponService;
 import kr.hhplus.be.server.domain.stock.StockService;
 import kr.hhplus.be.server.domain.order.Order;
@@ -9,6 +11,7 @@ import kr.hhplus.be.server.domain.order.OrderService;
 import kr.hhplus.be.server.domain.payment.PaymentService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderFacade {
@@ -48,7 +52,11 @@ public class OrderFacade {
         paymentService.pay(order.orderId(), order.finalAmount());
 
         // 5. 일별 판매량 Redis Cache 저장
-        eventPublisher.publishEvent(new OrderCompletedEvent(items));
+        eventPublisher.publishEvent(new ProductSalesDailyEvent(items));
+
+        // 6. 주문 성공 이벤트 발행
+        eventPublisher.publishEvent(new OrderEvent.Complete(order));
+        log.info("[OrderEvent] OrderCompleteEvent 발행 완료 - orderId: {}", order.orderId());
 
         return order;
     }
