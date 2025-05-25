@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.application.order;
 
 
-import kr.hhplus.be.server.application.event.OrderEvent;
-import kr.hhplus.be.server.application.event.ProductSalesDailyEvent;
+import kr.hhplus.be.server.domain.order.event.OrderEvent;
+import kr.hhplus.be.server.domain.product.stats.event.ProductSalesDailyEvent;
 import kr.hhplus.be.server.domain.coupon.usercoupon.UserCouponService;
 import kr.hhplus.be.server.domain.stock.StockService;
 import kr.hhplus.be.server.domain.order.Order;
@@ -55,7 +55,7 @@ public class OrderFacade {
         eventPublisher.publishEvent(new ProductSalesDailyEvent(items));
 
         // 6. 주문 성공 이벤트 발행
-        eventPublisher.publishEvent(new OrderEvent.Complete(order));
+        eventPublisher.publishEvent(new OrderEvent.Completed(order));
         log.info("[OrderEvent] OrderCompleteEvent 발행 완료 - orderId: {}", order.orderId());
 
         return order;

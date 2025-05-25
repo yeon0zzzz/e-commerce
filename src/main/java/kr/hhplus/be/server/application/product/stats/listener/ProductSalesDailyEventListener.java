@@ -1,7 +1,7 @@
-package kr.hhplus.be.server.domain.product.stats.event;
+package kr.hhplus.be.server.application.product.stats.listener;
 
-import kr.hhplus.be.server.application.event.ProductSalesDailyEvent;
 import kr.hhplus.be.server.domain.product.stats.ProductSalesService;
+import kr.hhplus.be.server.domain.product.stats.event.ProductSalesDailyEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
