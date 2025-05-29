@@ -1,7 +1,8 @@
 package kr.hhplus.be.server.application.order;
 
 
-import kr.hhplus.be.server.domain.order.event.OrderEvent;
+import kr.hhplus.be.server.application.event.OrderEvent;
+import kr.hhplus.be.server.application.event.message.OrderCompletedMessage;
 import kr.hhplus.be.server.domain.product.stats.event.ProductSalesDailyEvent;
 import kr.hhplus.be.server.domain.coupon.usercoupon.UserCouponService;
 import kr.hhplus.be.server.domain.stock.StockService;
@@ -10,6 +11,7 @@ import kr.hhplus.be.server.domain.order.OrderItem;
 import kr.hhplus.be.server.domain.order.OrderService;
 import kr.hhplus.be.server.domain.payment.PaymentService;
 
+import kr.hhplus.be.server.infra.message.producer.OrderCompletedProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -29,6 +32,7 @@ public class OrderFacade {
     private final OrderService orderService;
     private final PaymentService paymentService;
     private final ApplicationEventPublisher eventPublisher;
+    private final OrderCompletedProducer orderCompletedProducer;
 
     @Transactional
     public Order orderPayment(OrderPaymentCommand command) {
@@ -56,7 +60,9 @@ public class OrderFacade {
 
         // 6. 주문 성공 이벤트 발행
         eventPublisher.publishEvent(new OrderEvent.Completed(order));
-        log.info("[OrderEvent] OrderCompleteEvent 발행 완료 - orderId: {}", order.orderId());
+
+        // 7. kafka message publish
+        orderCompletedProducer.send(OrderCompletedMessage.from(order, items));
 
         return order;
     }
