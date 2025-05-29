@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @Configuration
@@ -14,6 +15,7 @@ class TestcontainersConfiguration {
 
 	public static final MySQLContainer<?> MYSQL_CONTAINER;
 	private static final GenericContainer<?> REDIS_CONTAINER;
+	public static final KafkaContainer KAFKA_CONTAINER;
 
 	static {
 		MYSQL_CONTAINER = new MySQLContainer<>(DockerImageName.parse("mysql:8.0"))
@@ -33,6 +35,12 @@ class TestcontainersConfiguration {
 
 		System.setProperty("data.redis.host", REDIS_CONTAINER.getHost());
 		System.setProperty("data.redis.port", REDIS_CONTAINER.getFirstMappedPort().toString());
+
+		// Kafka
+		KAFKA_CONTAINER = new KafkaContainer(DockerImageName.parse("apache/kafka"));
+		KAFKA_CONTAINER.start();
+
+		System.setProperty("spring.kafka.bootstrap-servers", KAFKA_CONTAINER.getBootstrapServers());
 	}
 
 	@PreDestroy
@@ -42,6 +50,10 @@ class TestcontainersConfiguration {
 		}
 		if (REDIS_CONTAINER.isRunning()) {
 			REDIS_CONTAINER.stop();
+		}
+
+		if (KAFKA_CONTAINER.isRunning()){
+			KAFKA_CONTAINER.stop();
 		}
 	}
 }
