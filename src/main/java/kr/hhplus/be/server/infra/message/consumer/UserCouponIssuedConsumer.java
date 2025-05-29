@@ -18,7 +18,6 @@ public class UserCouponIssuedConsumer {
     @KafkaListener(topics = "usercoupon.issued", groupId = "usercoupon-group")
     public void consume(UserCouponIssuedMessage message) {
         log.info("[Kafka] 사용자 쿠폰 발급 메시지 수신: userId={}, couponId={}", message.getUserId(), message.getCouponId());
-        userCouponService.save(UserCoupon.create(message.getUserId(), message.getCouponId()));
         try {
             UserCoupon userCoupon = UserCoupon.create(message.getUserId(), message.getCouponId());
             userCouponService.save(userCoupon);
