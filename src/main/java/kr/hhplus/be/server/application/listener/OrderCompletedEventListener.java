@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.domain.order.event;
+package kr.hhplus.be.server.application.listener;
 
 import kr.hhplus.be.server.application.dataplatform.DataPlatformClient;
 import kr.hhplus.be.server.application.event.OrderEvent;
@@ -12,13 +12,13 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class OrderCompleteEventListener {
+public class OrderCompletedEventListener {
 
     private final DataPlatformClient dataPlatformClient;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Async
-    public void handle(OrderEvent.Complete event) {
+    public void handle(OrderEvent.Completed event) {
         dataPlatformClient.sendOrderInvoice(event);
     }
 }

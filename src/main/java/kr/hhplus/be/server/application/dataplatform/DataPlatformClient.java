@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class DataPlatformClient {
 
-    public void sendOrderInvoice(OrderEvent.Complete event) {
+    public void sendOrderInvoice(OrderEvent.Completed event) {
         try {
             log.info("[OrderEvent] 외부 플랫폼 전용 MockAPI 주문 정보 전송- orderId: {}", event.order().orderId());
 
             Thread.sleep(2000);
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             log.error("주문 예외 발생 : {}", e.getMessage(), e);
         }
     }

@@ -4,7 +4,7 @@ import kr.hhplus.be.server.domain.order.Order;
 
 public class OrderEvent {
 
-    public record Complete(Order order) {}
+    public record Completed(Order order) {}
 
     public record Canceled(Order order) {}
 
