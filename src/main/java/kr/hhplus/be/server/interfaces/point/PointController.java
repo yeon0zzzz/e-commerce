@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("")
+@RequestMapping("/api/v1")
 public class PointController {
 
     private final PointService pointService;

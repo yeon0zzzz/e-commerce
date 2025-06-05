@@ -33,6 +33,8 @@ public class ProductControllerTest {
     @Autowired
     private DatabaseCleaner databaseCleaner;
 
+    private final String prefix = "/api/v1";
+
     @BeforeEach
     void setUp() {
         databaseCleaner.truncateAllTables();
@@ -48,7 +50,7 @@ public class ProductControllerTest {
                         .productStatus(ProductStatus.ACTIVE)
                         .build()
         );
-        mockMvc.perform(get("/products/1"))
+        mockMvc.perform(get(prefix+"/products/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.name").value("product_1"))
                 .andExpect(jsonPath("$.data.price").value(1000L))
@@ -65,7 +67,7 @@ public class ProductControllerTest {
                 Product.create("product_2", BigDecimal.valueOf(1000L))
         );
 
-        mockMvc.perform(get("/products"))
+        mockMvc.perform(get(prefix+"/products"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.products.length()").value(2))
                 .andExpect(jsonPath("$.data.products[0].name").value("product_1"))

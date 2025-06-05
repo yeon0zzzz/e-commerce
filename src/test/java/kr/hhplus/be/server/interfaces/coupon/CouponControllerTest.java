@@ -54,6 +54,7 @@ public class CouponControllerTest {
     private final Long couponId = 10L;
     private final String metaKey = "coupon:meta:" + couponId;
     private final String issueKey = "coupon:issue:" + couponId;
+    private final String prefix = "/api/v1";
 
     @BeforeEach
     void setUp() {
@@ -83,7 +84,7 @@ public class CouponControllerTest {
                         .build()
         );
 
-        mockMvc.perform(get("/coupons/1"))
+        mockMvc.perform(get(prefix+"/coupons/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.name").value("discount_coupon"))
                 .andExpect(jsonPath("$.data.discountAmount").value(100L))
@@ -109,7 +110,7 @@ public class CouponControllerTest {
                         .build()
         );
 
-        mockMvc.perform(post("/coupons/1/issue")
+        mockMvc.perform(post(prefix+"/coupons/1/issue")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"userId\": 1}"))
                 .andExpect(status().isOk())
@@ -123,7 +124,7 @@ public class CouponControllerTest {
     void coupon_issue_kafka_event_flow() throws Exception {
         Long userId = 1L;
 
-        mockMvc.perform(post("/coupons/{couponId}/publish", couponId)
+        mockMvc.perform(post(prefix+"/coupons/{couponId}/publish", couponId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
