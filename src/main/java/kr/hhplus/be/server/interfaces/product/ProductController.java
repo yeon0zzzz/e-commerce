@@ -13,12 +13,12 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/v1")
 public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("/{productId}")
+    @GetMapping("/products/{productId}")
     public ApiResponse<ProductDto.Response> getProduct(@PathVariable Long productId) {
 
         Product product = productService.findById(productId);
@@ -26,7 +26,7 @@ public class ProductController {
         return ApiResponse.success(ProductDto.Response.of(product));
     }
 
-    @GetMapping("")
+    @GetMapping("/products")
     public ApiResponse<ProductListDto.Response> getProducts() {
 
         List<Product> products = productService.getAll();

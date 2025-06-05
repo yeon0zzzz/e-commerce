@@ -25,6 +25,8 @@ public class PopularProductControllerTest {
     @Autowired
     private DatabaseCleaner databaseCleaner;
 
+    private final String prefix = "/api/v1";
+
     @AfterEach
     void setUp() {
         databaseCleaner.truncateAllTables();
@@ -35,7 +37,7 @@ public class PopularProductControllerTest {
     @Sql(scripts = "/sql/popularProducts.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void success_get_popular_products_test() throws Exception {
 
-        mockMvc.perform(get("/stats/products/popular"))
+        mockMvc.perform(get(prefix+"/stats/products/popular"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.popularProducts.length()").value(5));
     }

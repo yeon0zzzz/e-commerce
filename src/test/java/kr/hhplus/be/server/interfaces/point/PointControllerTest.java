@@ -34,6 +34,8 @@ public class PointControllerTest {
     @Autowired
     private DatabaseCleaner databaseCleaner;
 
+    private final String prefix = "/api/v1";
+
     @BeforeEach
     void setUp() {
         databaseCleaner.truncateAllTables();
@@ -50,7 +52,7 @@ public class PointControllerTest {
                 .build()
         );
 
-        mockMvc.perform(get("/users/1/point"))
+        mockMvc.perform(get(prefix+"/users/1/point"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.point").value(100L));
     }
@@ -66,7 +68,7 @@ public class PointControllerTest {
                         .build()
         );
 
-        mockMvc.perform(patch("/users/1/point")
+        mockMvc.perform(patch(prefix+"/users/1/point")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"amount\": 200}"))
                 .andExpect(status().isOk())

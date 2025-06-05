@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/api/v1")
 public class OrderController {
 
     private final OrderFacade orderFacade;
 
-    @PostMapping("/payment")
+    @PostMapping("/orders/payment")
     public ApiResponse<OrderPaymentDto.Response> orderPayment(@RequestBody OrderPaymentDto.Request request) {
 
         // 1. 클라이언트의 요청은 DTO 로 받아서 응용 계층 입력 객체로 변환 (Request -> Command)

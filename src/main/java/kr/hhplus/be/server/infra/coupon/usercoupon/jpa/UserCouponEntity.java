@@ -27,7 +27,7 @@ public class UserCouponEntity {
     @Column(name = "coupon_id")
     private Long couponId;
 
-    @Column(name = "used")
+    @Column(name = "used", columnDefinition = "TINYINT(1)")
     private boolean used;
 
     @Column(name = "used_at")
